@@ -5,6 +5,8 @@ import NavBar from "../components/NavBar";
 import CloseIcon from "@mui/icons-material/Close";
 import { IconButton } from "@mui/material";
 import FilterConditions from "../components/FilterConditions";
+import ModalUi from "../components/ui/ModalUi";
+import DeleteModal from "../components/DeleteModal";
 const rows = [
   {
     name: "Transformer 1",
@@ -87,6 +89,9 @@ const HomePage = () => {
   const [isSearching, setIsSearching] = useState(false);
   const [allData, setAllData] = useState(rows);
 
+  const [openDeleteModal, setOpenDeleteModal] = React.useState(false);
+
+  const handleOpenDeleteModal = () => setOpenDeleteModal(true);
   //   ******************************************** filter functions ***************************************
   const filterHandler = () => {
     setFilterToggle(!filterToggle);
@@ -152,6 +157,7 @@ const HomePage = () => {
   //   ************************************************  delete function *****************************
 
   const deleteTransformer = (id) => {
+    handleOpenDeleteModal();
     setAllData(allData.filter((data) => data.id !== id));
   };
   const deleteSelectedTransformer = () => {
@@ -200,6 +206,13 @@ const HomePage = () => {
           rows={isSearching ? searchedData : allData}
         />
       </div>
+      <ModalUi
+        width={"400px"}
+        open={openDeleteModal}
+        setOpen={setOpenDeleteModal}
+      >
+        <DeleteModal />
+      </ModalUi>
     </div>
   );
 };
