@@ -4,6 +4,7 @@ import HomeTable from "../components/HomeTable";
 import NavBar from "../components/NavBar";
 import CloseIcon from "@mui/icons-material/Close";
 import { IconButton } from "@mui/material";
+import FilterConditions from "../components/FilterConditions";
 const rows = [
   {
     name: "Transformer 1",
@@ -12,6 +13,7 @@ const rows = [
     temprature: 2323,
     oilLevel: "34%",
     id: "skms",
+    location: "bole",
   },
   {
     name: "mac 2",
@@ -20,6 +22,7 @@ const rows = [
     temprature: 223,
     oilLevel: "34%",
     id: "aksdsdks",
+    location: "saris",
   },
   {
     name: "other name 3",
@@ -28,6 +31,7 @@ const rows = [
     temprature: 23,
     oilLevel: "34%",
     id: "knsjnjsn",
+    location: "bole",
   },
   {
     name: "Transformer 4",
@@ -36,6 +40,7 @@ const rows = [
     temprature: 323,
     oilLevel: "34%",
     id: "ajksndssjkansdj",
+    location: "bole",
   },
   {
     name: "Transformer 1",
@@ -44,9 +49,11 @@ const rows = [
     temprature: 2323,
     oilLevel: "34%",
     id: "skssms",
+    location: "megenagna",
   },
   {
     name: "Transformer 2",
+    location: "saris",
     voltage: 12,
     current: 6,
     temprature: 223,
@@ -60,6 +67,7 @@ const rows = [
     temprature: 23,
     oilLevel: "34%",
     id: "knsjdsdasdnjsn",
+    location: "bole",
   },
   {
     name: "Transformer 4",
@@ -68,22 +76,29 @@ const rows = [
     temprature: 323,
     oilLevel: "34%",
     id: "ajksnjdskansdj",
+    location: "megenagna",
   },
 ];
 const HomePage = () => {
   const [selected, setSelected] = React.useState([]);
   const [filterToggle, setFilterToggle] = React.useState(false);
   const [searchParametr, setSearchParameter] = useState("");
+  const [searchedData, setSearchedData] = useState([]);
+  const [isSearching, setIsSearching] = useState(false);
   const [allData, setAllData] = useState(rows);
+
+  //   ******************************************** filter functions ***************************************
   const filterHandler = () => {
     setFilterToggle(!filterToggle);
   };
   const [allCondition, setAllCondition] = React.useState([]);
+
   const addFilterCondition = (type, min, max) => {
     const id = Date.now();
     console.log("PPPPPPPPPPPPPPPP", type, min, max);
     setAllCondition([...allCondition, { type, min, max, id }]);
   };
+
   const closFilterCondition = (id) => {
     const newConditions = allCondition.filter(
       (condition) => id !== condition.id
@@ -91,6 +106,8 @@ const HomePage = () => {
     console.log(newConditions, allCondition);
     setAllCondition(newConditions);
   };
+
+  //   ********************************************* select function **************************************
   const handleSelectAllClick = (event) => {
     if (event.target.checked) {
       const newSelected = [...allData];
@@ -116,18 +133,23 @@ const HomePage = () => {
 
     setSelected(newSelected);
   };
+
+  //   ***************************************  search functions ***********************************
   const transformerSearchHandler = (event) => {
     const search = event.target.value.trim().toLowerCase();
+    const regx = new RegExp(search, "g");
     let newData;
     if (search === "") {
+      setIsSearching(false);
       newData = [...allData];
     } else {
-      newData = allData.filter((row) =>
-        row.name.toLowerCase().startsWith(search)
-      );
+      setIsSearching(true);
+      newData = allData.filter((row) => regx.test(row.name.toLowerCase()));
     }
-    setAllData(newData);
+    setSearchedData(newData);
   };
+
+  //   ************************************************  delete function *****************************
 
   const deleteTransformer = (id) => {
     setAllData(allData.filter((data) => data.id !== id));
@@ -149,34 +171,25 @@ const HomePage = () => {
         handleFilter={filterHandler}
       />
 
-      {/* ############################################################################################### */}
       {filterToggle && (
         <div className="">
           <div>
             <Filter addFilterCondition={addFilterCondition} />
           </div>
+          {/*********** filter condition display ************/}
           <div className="w-[630px] mx-auto justify-center  flex flex-wrap ">
             {allCondition.map((condition, i) => (
-              <div
+              <FilterConditions
                 key={condition.id}
-                className="flex  min-w-[180px] self-center  items-center justify-between border-[1px] hover:border-[#006A66] p-2 rounded-full m-2"
-              >
-                <p className="  ">
-                  {condition.type}{" "}
-                  <span>
-                    {condition.min}-{condition.max}
-                  </span>
-                </p>
-                <IconButton onClick={() => closFilterCondition(condition.id)}>
-                  <CloseIcon sx={{ color: "#006A66" }} />
-                </IconButton>
-              </div>
+                condition={condition}
+                closFilterCondition={closFilterCondition}
+              />
             ))}
           </div>
         </div>
       )}
 
-      {/* ############################################################################################### */}
+      {/************************************************ home table list ********************************************/}
       <div className=" w-[96%] my-6 mx-auto">
         <HomeTable
           handleSelectAllClick={handleSelectAllClick}
@@ -184,7 +197,7 @@ const HomePage = () => {
           handleClick={handleSelectClick}
           deleteTransformer={deleteTransformer}
           deleteSelectedTransformer={deleteSelectedTransformer}
-          rows={allData}
+          rows={isSearching ? searchedData : allData}
         />
       </div>
     </div>
