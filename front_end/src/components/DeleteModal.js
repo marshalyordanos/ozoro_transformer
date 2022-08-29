@@ -3,7 +3,12 @@ import CancelRoundedIcon from "@mui/icons-material/CancelRounded";
 import ModalUi from "./ui/ModalUi";
 import { Button } from "@mui/material";
 
-const DeleteModal = () => {
+const DeleteModal = ({
+  setIsDeleteConfirmed,
+  isDeleteConfirmed,
+  deleteTransformer,
+  setOpen,
+}) => {
   return (
     <div>
       <div className="mt-[-70px] w-[80px] mx-auto ">
@@ -29,12 +34,25 @@ const DeleteModal = () => {
         </p>
         <div className=" space-x-5 mt-5">
           <Button
+            onClick={() => {
+              setIsDeleteConfirmed(false);
+              setOpen(false);
+            }}
             variant="contained"
             sx={{ width: 120, background: "#a9a9a9" }}
           >
             Cancel
           </Button>
-          <Button variant="contained" sx={{ width: 120 }} color="error">
+          <Button
+            onClick={() => {
+              deleteTransformer();
+              setIsDeleteConfirmed(true);
+              setOpen(false);
+            }}
+            variant="contained"
+            sx={{ width: 120 }}
+            color="error"
+          >
             Delete
           </Button>
         </div>

@@ -23,6 +23,7 @@ import FilterListIcon from "@mui/icons-material/FilterList";
 import { visuallyHidden } from "@mui/utils";
 import RemoveRedEyeOutlinedIcon from "@mui/icons-material/RemoveRedEyeOutlined";
 import BorderColorOutlinedIcon from "@mui/icons-material/BorderColorOutlined";
+import { Link } from "react-router-dom";
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -173,8 +174,11 @@ EnhancedTableHead.propTypes = {
 };
 
 const EnhancedTableToolbar = (props) => {
-  const { numSelected } = props;
-
+  const { selected } = props;
+  const numSelected = selected.length;
+  console.log("group slected", selected);
+  const selectedId = selected.map((v) => v.id).join(",");
+  console.log("group slected", selected, selectedId);
   return (
     <Toolbar
       sx={{
@@ -204,15 +208,19 @@ const EnhancedTableToolbar = (props) => {
 
       {numSelected > 0 ? (
         <div className="flex">
-          <IconButton>
-            <RemoveRedEyeOutlinedIcon sx={{ color: "#006A66" }} />
-          </IconButton>
+          <Link to={`/home/${selectedId}`}>
+            <IconButton>
+              <RemoveRedEyeOutlinedIcon sx={{ color: "#006A66" }} />
+            </IconButton>
+          </Link>
 
-          <IconButton>
-            <BorderColorOutlinedIcon sx={{ color: "#006A66" }} />
-          </IconButton>
+          <Link to={`/home/edit/${selectedId}`}>
+            <IconButton>
+              <BorderColorOutlinedIcon sx={{ color: "#006A66" }} />
+            </IconButton>
+          </Link>
 
-          <IconButton onClick={props.click}>
+          <IconButton onClick={() => props.click("slected delete")}>
             <DeleteIcon sx={{ color: "#006A66" }} />
           </IconButton>
         </div>
@@ -224,7 +232,7 @@ const EnhancedTableToolbar = (props) => {
 };
 
 EnhancedTableToolbar.propTypes = {
-  numSelected: PropTypes.number.isRequired,
+  selected: PropTypes.array.isRequired,
 };
 
 const HomeTable = ({
@@ -232,8 +240,7 @@ const HomeTable = ({
   handleSelectAllClick,
   handleClick,
   selected,
-  deleteSelectedTransformer,
-  deleteTransformer,
+  handleDleteModal,
 }) => {
   const [order, setOrder] = React.useState("asc");
   const [orderBy, setOrderBy] = React.useState("calories");
@@ -267,10 +274,7 @@ const HomeTable = ({
   return (
     <Box sx={{ width: "100%", color: "#006A66" }}>
       <Paper sx={{ width: "100%", mb: 2, color: "#006A66" }}>
-        <EnhancedTableToolbar
-          click={deleteSelectedTransformer}
-          numSelected={selected.length}
-        />
+        <EnhancedTableToolbar click={handleDleteModal} selected={selected} />
         <TableContainer>
           <Table
             sx={{ minWidth: 750 }}
@@ -325,17 +329,25 @@ const HomeTable = ({
                       <TableCell align="center">{row.current}</TableCell>
                       <TableCell align="center">{row.temprature}</TableCell>
                       <TableCell>
-                        <IconButton>
-                          <RemoveRedEyeOutlinedIcon sx={{ color: "#006A66" }} />
-                        </IconButton>
+                        <Link to={`/home/${row.id}`}>
+                          <IconButton>
+                            <RemoveRedEyeOutlinedIcon
+                              sx={{ color: "#006A66" }}
+                            />
+                          </IconButton>
+                        </Link>
                       </TableCell>
                       <TableCell>
-                        <IconButton>
-                          <BorderColorOutlinedIcon sx={{ color: "#006A66" }} />
-                        </IconButton>
+                        <Link to={`/home/edit/${row.id}`}>
+                          <IconButton>
+                            <BorderColorOutlinedIcon
+                              sx={{ color: "#006A66" }}
+                            />
+                          </IconButton>
+                        </Link>
                       </TableCell>
                       <TableCell>
-                        <IconButton onClick={() => deleteTransformer(row.id)}>
+                        <IconButton onClick={() => handleDleteModal(row.id)}>
                           <DeleteIcon sx={{ color: "#006A66" }} />
                         </IconButton>
                       </TableCell>

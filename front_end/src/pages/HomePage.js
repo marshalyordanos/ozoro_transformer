@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import Filter from "../components/Filter";
 import HomeTable from "../components/HomeTable";
 import NavBar from "../components/NavBar";
@@ -88,9 +88,10 @@ const HomePage = () => {
   const [searchedData, setSearchedData] = useState([]);
   const [isSearching, setIsSearching] = useState(false);
   const [allData, setAllData] = useState(rows);
+  const [isDeleteConfirmed, setIsDeleteConfirmed] = useState(false);
 
   const [openDeleteModal, setOpenDeleteModal] = React.useState(false);
-
+  const transformerId = useRef();
   const handleOpenDeleteModal = () => setOpenDeleteModal(true);
   //   ******************************************** filter functions ***************************************
   const filterHandler = () => {
@@ -153,15 +154,35 @@ const HomePage = () => {
     }
     setSearchedData(newData);
   };
+  //   ************************************************  view function *****************************
 
+  const handleViewOneTransformer = () => {
+    console.log("View one transformer");
+  };
+
+  const handleViewSlectedTransformer = () => {
+    console.log("view selected transformers");
+  };
   //   ************************************************  delete function *****************************
 
-  const deleteTransformer = (id) => {
+  const handleDleteModal = (id) => {
     handleOpenDeleteModal();
-    setAllData(allData.filter((data) => data.id !== id));
+    transformerId.current = id;
+  };
+  const deleteTransformer = (id) => {
+    if (transformerId.current === "slected delete") {
+      let newData = allData;
+      selected.forEach((v) => {
+        newData = newData.filter((data) => data.id !== v.id);
+      });
+      setAllData(newData);
+      setSelected([]);
+    } else {
+      setAllData(allData.filter((data) => data.id !== transformerId.current));
+      setSelected([]);
+    }
   };
   const deleteSelectedTransformer = () => {
-    console.log("[[[[[[[[[[[[[[[[[[[[");
     let newData = allData;
     selected.forEach((v) => {
       newData = newData.filter((data) => data.id !== v.id);
@@ -201,8 +222,7 @@ const HomePage = () => {
           handleSelectAllClick={handleSelectAllClick}
           selected={selected}
           handleClick={handleSelectClick}
-          deleteTransformer={deleteTransformer}
-          deleteSelectedTransformer={deleteSelectedTransformer}
+          handleDleteModal={handleDleteModal}
           rows={isSearching ? searchedData : allData}
         />
       </div>
@@ -211,7 +231,12 @@ const HomePage = () => {
         open={openDeleteModal}
         setOpen={setOpenDeleteModal}
       >
-        <DeleteModal />
+        <DeleteModal
+          isDeleteConfirmed={isDeleteConfirmed}
+          setIsDeleteConfirmed={setIsDeleteConfirmed}
+          setOpen={setOpenDeleteModal}
+          deleteTransformer={deleteTransformer}
+        />
       </ModalUi>
     </div>
   );

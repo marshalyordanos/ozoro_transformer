@@ -1,10 +1,11 @@
 import { IconButton } from "@mui/material";
 import React from "react";
 import CloseIcon from "@mui/icons-material/Close";
+import styled from "styled-components";
 
 const FilterConditions = ({ condition, closFilterCondition }) => {
   return (
-    <div
+    <FilterStyled
       key={condition.id}
       className="flex  min-w-[180px] self-center  items-center justify-between border-[1px] hover:border-[#006A66] p-2 rounded-full m-2"
     >
@@ -17,8 +18,10 @@ const FilterConditions = ({ condition, closFilterCondition }) => {
       <IconButton onClick={() => closFilterCondition(condition.id)}>
         <CloseIcon sx={{ color: "#006A66" }} />
       </IconButton>
-    </div>
+    </FilterStyled>
   );
 };
+
+const FilterStyled = styled.div``;
 
 export default FilterConditions;
