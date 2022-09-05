@@ -3,10 +3,11 @@ import Filter from "../components/Filter";
 import HomeTable from "../components/HomeTable";
 import NavBar from "../components/NavBar";
 import CloseIcon from "@mui/icons-material/Close";
-import { IconButton } from "@mui/material";
+import { CircularProgress, IconButton } from "@mui/material";
 import FilterConditions from "../components/FilterConditions";
 import ModalUi from "../components/ui/ModalUi";
 import DeleteModal from "../components/DeleteModal";
+import Terminal from "../components/Terminal";
 const rows = [
   {
     name: "Transformer 1",
@@ -89,7 +90,7 @@ const HomePage = () => {
   const [isSearching, setIsSearching] = useState(false);
   const [allData, setAllData] = useState(rows);
   const [isDeleteConfirmed, setIsDeleteConfirmed] = useState(false);
-
+  const [isLoading, setIsLoading] = useState(false);
   const [openDeleteModal, setOpenDeleteModal] = React.useState(false);
   const transformerId = useRef();
   const handleOpenDeleteModal = () => setOpenDeleteModal(true);
@@ -99,10 +100,16 @@ const HomePage = () => {
   };
   const [allCondition, setAllCondition] = React.useState([]);
 
-  const addFilterCondition = (type, min, max) => {
+  const addFilterCondition = (type, min, max, opration) => {
     const id = Date.now();
-    console.log("PPPPPPPPPPPPPPPP", type, min, max);
-    setAllCondition([...allCondition, { type, min, max, id }]);
+    const x = setTimeout(() => {
+      console.log("PPPPPPPPPPPPPPPP", type, min, max);
+      setAllCondition([...allCondition, { type, min, max, id, opration }]);
+      console.log("all condition", [
+        ...allCondition,
+        { type, min, max, id, opration },
+      ]);
+    }, 3000);
   };
 
   const closFilterCondition = (id) => {
@@ -141,10 +148,11 @@ const HomePage = () => {
   };
 
   //   ***************************************  search functions ***********************************
-  const transformerSearchHandler = (event) => {
+  const transformerSearchHandler = async (event) => {
     const search = event.target.value.trim().toLowerCase();
     const regx = new RegExp(search, "g");
     let newData;
+
     if (search === "") {
       setIsSearching(false);
       newData = [...allData];
@@ -194,17 +202,23 @@ const HomePage = () => {
   return (
     <div>
       <NavBar
+        type="home"
         transformerSearchHandler={transformerSearchHandler}
         handleFilter={filterHandler}
       />
 
+      {/* <button className=" border-[1px] p-2"> click me</button> */}
+
       {filterToggle && (
         <div className="">
           <div>
-            <Filter addFilterCondition={addFilterCondition} />
+            <Filter
+              allCondition={allCondition}
+              addFilterCondition={addFilterCondition}
+            />
           </div>
           {/*********** filter condition display ************/}
-          <div className="w-[630px] mx-auto justify-center  flex flex-wrap ">
+          <div className="w-[80vw] mx-auto justify-center  flex flex-wrap ">
             {allCondition.map((condition, i) => (
               <FilterConditions
                 key={condition.id}
@@ -226,6 +240,12 @@ const HomePage = () => {
           rows={isSearching ? searchedData : allData}
         />
       </div>
+      <div>
+        <Terminal />
+      </div>
+      <ModalUi bg="none" open={isLoading}>
+        <CircularProgress sx={{ color: "#006A66" }} />
+      </ModalUi>
       <ModalUi
         width={"400px"}
         open={openDeleteModal}

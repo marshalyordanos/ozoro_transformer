@@ -9,11 +9,12 @@ import TextField from "@mui/material/TextField";
 import { Button, FormControlLabel, Radio, RadioGroup } from "@mui/material";
 import styled from "styled-components";
 
-const Filter = ({ addFilterCondition }) => {
+const Filter = ({ addFilterCondition, allCondition }) => {
   const [condition, setCondition] = React.useState("temprature");
   const [max, setMax] = useState(null);
   const [min, setMin] = useState(null);
   const [operation, setOperation] = React.useState("and");
+  console.log("all condition in filter", allCondition);
 
   const handleRadioChange = (event) => {
     console.log(
@@ -30,10 +31,22 @@ const Filter = ({ addFilterCondition }) => {
   return (
     <FilterSttle>
       <h1 className="text-xl">Filter Conditions</h1>
-      <div className=" filter_condition mt-3">
+      <form
+        onSubmit={(event) => {
+          event.preventDefault();
+          addFilterCondition(condition, min, max, operation);
+        }}
+        className=" filter_condition mt-3"
+      >
         <p className="py-3">Conditions:</p>
         <div>
-          <FormControl color="success" className=" w-[560px]">
+          <FormControl
+            color="success"
+            sx={{
+              minWidth: 180,
+            }}
+            className=" w-[45vw] min-w-[200px]"
+          >
             <InputLabel id="demo-simple-select-standard-label">Age</InputLabel>
             <Select
               labelId="demo-simple-select-standard-label"
@@ -52,6 +65,8 @@ const Filter = ({ addFilterCondition }) => {
         </div>
         <div className="mt-8 space-x-8 mb-8  flex justify-center">
           <TextField
+            type={"number"}
+            required
             onChange={(e) => setMin(e.target.value)}
             color="success"
             size="small"
@@ -62,6 +77,8 @@ const Filter = ({ addFilterCondition }) => {
             variant="outlined"
           />
           <TextField
+            required
+            type={"number"}
             onChange={(e) => setMax(e.target.value)}
             color="success"
             size="small"
@@ -83,12 +100,23 @@ const Filter = ({ addFilterCondition }) => {
             row
             onChange={handleRadioChange}
           >
-            <FormControlLabel value="and" control={<Radio />} label="And" />
-            <FormControlLabel value="or" control={<Radio />} label="Or" />
+            <FormControlLabel
+              disabled={allCondition.length > 0}
+              value="and"
+              control={<Radio />}
+              label="And"
+            />
+            <FormControlLabel
+              disabled={allCondition.length > 0}
+              value="or"
+              control={<Radio />}
+              label="Or"
+            />
           </RadioGroup>
         </div>
         <div className="flex justify-center ">
           <Button
+            type="submit"
             size={"large"}
             sx={{
               color: "black",
@@ -98,26 +126,37 @@ const Filter = ({ addFilterCondition }) => {
               color: "#006A66",
             }}
             variant="outlined"
-            onClick={() => addFilterCondition(condition, min, max)}
+            // onClick={() => }
           >
             Add
           </Button>
         </div>
-      </div>
+      </form>
     </FilterSttle>
   );
 };
 
 const FilterSttle = styled.div`
-  width: 600px;
+  width: 60vw;
+  min-width: 220px;
   padding: 20px;
   margin: 5px auto;
   .filter_condition {
     border: 1px solid lightgray;
-    width: 600px;
+    width: 50vw;
+    min-width: 220px;
+
     padding: 20px;
     border-radius: 15px;
     margin: 5px auto;
+  }
+  @media screen and (max-width: 910px) {
+    .navbar__icons {
+      display: none;
+    }
+    .navbar__mune {
+      display: block;
+    }
   }
 `;
 

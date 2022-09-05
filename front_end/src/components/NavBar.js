@@ -1,10 +1,10 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Button from "@mui/material/Button";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import styled from "styled-components";
 import Icon from "./icons/Icon";
-import { MenuOutlined } from "@mui/icons-material";
+import { Home, MenuOutlined } from "@mui/icons-material";
 import { IconButton } from "@mui/material";
 import CalendarMonthOutlinedIcon from "@mui/icons-material/CalendarMonthOutlined";
 // import {MenuIcon} from '@mui/icons-material/';
@@ -12,35 +12,68 @@ import NoteAddOutlinedIcon from "@mui/icons-material/NoteAddOutlined";
 import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined";
 import NotificationsOutlinedIcon from "@mui/icons-material/NotificationsOutlined";
 import FilterListOutlinedIcon from "@mui/icons-material/FilterListOutlined";
-const NavBar = ({ handleFilter, transformerSearchHandler }) => {
+import HomeIcon from "@mui/icons-material/Home";
+import { Link } from "react-router-dom";
+const NavBar = ({ handleFilter, transformerSearchHandler, type }) => {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
+  const [size, setSize] = useState(window.innerWidth);
+
+  useEffect(() => {
+    function handleResize() {
+      setSize(window.innerWidth);
+    }
+
+    window.addEventListener("resize", handleResize);
+  }, [size]);
+
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
   const handleClose = () => {
     setAnchorEl(null);
   };
-  return (
-    <NavbarStyle className="flex items-center justify-between h-[65px] bg-[#317773] w-full ">
-      {/* logo and humburger icon */}
-      <div className="pl-2 pt-2 flex items-center space-x-5 ">
-        <Icon fill={"white"} width={50} height={50} />
-        <IconButton onClick={handleFilter}>
-          <FilterListOutlinedIcon sx={{ color: "white", fontSize: 32 }} />
-        </IconButton>
-      </div>
 
+  return (
+    <NavbarStyle className="flex items-center justify-between h-[65px] bg-[#006A66] w-full ">
+      {/* logo and humburger icon */}
+      <div className="pl-2 pt-2 flex items-center ">
+        <Icon
+          fill={"white"}
+          width={size < 472 ? 30 : 50}
+          height={size < 472 ? 30 : 50}
+        />
+        {type === "view" ? (
+          <Link to="/home">
+            <IconButton>
+              <Home sx={{ color: "white", fontSize: size < 472 ? 24 : 32 }} />
+            </IconButton>
+          </Link>
+        ) : (
+          <IconButton onClick={handleFilter}>
+            <FilterListOutlinedIcon
+              sx={{ color: "white", fontSize: size < 472 ? 24 : 32 }}
+            />
+          </IconButton>
+        )}
+      </div>
+      {type === "view" && (
+        <div className="title border-[1px] border-white px-14 py-2 rounded-full w-[50vw] ">
+          <h1 className="text-white text-center text-xl ">Transformer 1</h1>
+        </div>
+      )}
       <div className="flex items-center ">
         {/* search input when appre only on home page */}
-        <div className="  w-[50vw] ">
-          <input
-            type="text"
-            placeholder="Search"
-            onChange={(event) => transformerSearchHandler(event)}
-            className="w-full px-3 rounded-sm  h-[40px]"
-          />
-        </div>
+        {type === "home" && (
+          <div className="  w-[50vw] ">
+            <input
+              type="text"
+              placeholder="Search"
+              onChange={(event) => transformerSearchHandler(event)}
+              className="w-full px-3 rounded-sm  h-[40px]"
+            />
+          </div>
+        )}
         {/* transformer name appre for ather pages */}
 
         {/* navbar icons */}
@@ -105,6 +138,15 @@ const NavbarStyle = styled.div`
     }
     .navbar__mune {
       display: block;
+    }
+  }
+  @media screen and (max-width: 472px) {
+    .title {
+      border: none;
+      padding: 0;
+      h1 {
+        font-size: 18px;
+      }
     }
   }
 `;

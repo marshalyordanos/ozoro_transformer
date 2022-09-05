@@ -7,7 +7,7 @@ const FilterConditions = ({ condition, closFilterCondition }) => {
   return (
     <FilterStyled
       key={condition.id}
-      className="flex  min-w-[180px] self-center  items-center justify-between border-[1px] hover:border-[#006A66] p-2 rounded-full m-2"
+      className=" flex  min-w-[180px] self-center  items-center justify-between border-[1px]  hover:border-[#006A66] p-2 rounded-full m-2"
     >
       <p className="  ">
         {condition.type}{" "}
@@ -22,6 +22,14 @@ const FilterConditions = ({ condition, closFilterCondition }) => {
   );
 };
 
-const FilterStyled = styled.div``;
+const FilterStyled = styled.div`
+  @media screen and (max-width: 680px) {
+    padding: 3px 5px;
+    min-width: 100px;
+    p {
+      font-size: 13px;
+    }
+  }
+`;
 
 export default FilterConditions;

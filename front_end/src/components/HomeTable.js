@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import { alpha } from "@mui/material/styles";
 import Box from "@mui/material/Box";
@@ -24,7 +24,7 @@ import { visuallyHidden } from "@mui/utils";
 import RemoveRedEyeOutlinedIcon from "@mui/icons-material/RemoveRedEyeOutlined";
 import BorderColorOutlinedIcon from "@mui/icons-material/BorderColorOutlined";
 import { Link } from "react-router-dom";
-
+import BarChartIcon from "@mui/icons-material/BarChart";
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
     return -1;
@@ -55,33 +55,6 @@ function stableSort(array, comparator) {
   return stabilizedThis.map((el) => el[0]);
 }
 
-const headCells = [
-  {
-    id: "name",
-    numeric: false,
-    disablePadding: true,
-    label: "Name",
-  },
-  {
-    id: "voltage",
-    numeric: true,
-    disablePadding: false,
-    label: "Voltage (V)",
-  },
-  {
-    id: "Current",
-    numeric: true,
-    disablePadding: false,
-    label: "Current (A)",
-  },
-  {
-    id: "temprature",
-    numeric: true,
-    disablePadding: false,
-    label: "Temprature (C)",
-  },
-];
-
 const headCells2 = [
   {
     id: "View",
@@ -111,6 +84,36 @@ function EnhancedTableHead(props) {
     rowCount,
     onRequestSort,
   } = props;
+  const [headCells, setHeadCells] = useState([
+    {
+      id: "name",
+      numeric: false,
+      disablePadding: true,
+      label: "Name",
+    },
+    {
+      id: "location",
+      numeric: false,
+      disablePadding: true,
+      label: "Location",
+    },
+  ]);
+  const [headCellsMobile, setHeadCellsMobile] = useState([
+    {
+      id: "name",
+      numeric: false,
+      disablePadding: true,
+      label: "Name",
+    },
+  ]);
+  const [size, setSize] = useState(window.innerWidth);
+  useEffect(() => {
+    function handleResize() {
+      setSize(window.innerWidth);
+    }
+
+    window.addEventListener("resize", handleResize);
+  }, [size]);
   const createSortHandler = (property) => (event) => {
     onRequestSort(event, property);
   };
@@ -129,27 +132,53 @@ function EnhancedTableHead(props) {
             }}
           />
         </TableCell>
-        {headCells.map((headCell) => (
-          <TableCell
-            key={headCell.id}
-            align={headCell.numeric ? "center" : "left"}
-            padding={headCell.disablePadding ? "none" : "normal"}
-            sortDirection={orderBy === headCell.id ? order : false}
-          >
-            <TableSortLabel
-              active={orderBy === headCell.id}
-              direction={orderBy === headCell.id ? order : "asc"}
-              onClick={createSortHandler(headCell.id)}
-            >
-              {headCell.label}
-              {orderBy === headCell.id ? (
-                <Box component="span" sx={visuallyHidden}>
-                  {order === "desc" ? "sorted descending" : "sorted ascending"}
-                </Box>
-              ) : null}
-            </TableSortLabel>
-          </TableCell>
-        ))}
+        {size > 603
+          ? headCells.map((headCell) => (
+              <TableCell
+                key={headCell.id}
+                align={headCell.numeric ? "center" : "left"}
+                padding={headCell.disablePadding ? "none" : "normal"}
+                sortDirection={orderBy === headCell.id ? order : false}
+              >
+                <TableSortLabel
+                  active={orderBy === headCell.id}
+                  direction={orderBy === headCell.id ? order : "asc"}
+                  onClick={createSortHandler(headCell.id)}
+                >
+                  {headCell.label}
+                  {orderBy === headCell.id ? (
+                    <Box component="span" sx={visuallyHidden}>
+                      {order === "desc"
+                        ? "sorted descending"
+                        : "sorted ascending"}
+                    </Box>
+                  ) : null}
+                </TableSortLabel>
+              </TableCell>
+            ))
+          : headCellsMobile.map((headCell) => (
+              <TableCell
+                key={headCell.id}
+                align={headCell.numeric ? "center" : "left"}
+                padding={headCell.disablePadding ? "none" : "normal"}
+                sortDirection={orderBy === headCell.id ? order : false}
+              >
+                <TableSortLabel
+                  active={orderBy === headCell.id}
+                  direction={orderBy === headCell.id ? order : "asc"}
+                  onClick={createSortHandler(headCell.id)}
+                >
+                  {headCell.label}
+                  {orderBy === headCell.id ? (
+                    <Box component="span" sx={visuallyHidden}>
+                      {order === "desc"
+                        ? "sorted descending"
+                        : "sorted ascending"}
+                    </Box>
+                  ) : null}
+                </TableSortLabel>
+              </TableCell>
+            ))}
         {headCells2.map((headCell) => (
           <TableCell
             key={headCell.id}
@@ -176,9 +205,8 @@ EnhancedTableHead.propTypes = {
 const EnhancedTableToolbar = (props) => {
   const { selected } = props;
   const numSelected = selected.length;
-  console.log("group slected", selected);
   const selectedId = selected.map((v) => v.id).join(",");
-  console.log("group slected", selected, selectedId);
+
   return (
     <Toolbar
       sx={{
@@ -208,15 +236,15 @@ const EnhancedTableToolbar = (props) => {
 
       {numSelected > 0 ? (
         <div className="flex">
-          <Link to={`/home/${selectedId}`}>
+          <Link to={`/home/status/${selectedId}`}>
             <IconButton>
-              <RemoveRedEyeOutlinedIcon sx={{ color: "#006A66" }} />
+              <BarChartIcon sx={{ color: "#006A66" }} />
             </IconButton>
           </Link>
 
-          <Link to={`/home/edit/${selectedId}`}>
+          <Link to={`/home/${selectedId}`}>
             <IconButton>
-              <BorderColorOutlinedIcon sx={{ color: "#006A66" }} />
+              <RemoveRedEyeOutlinedIcon sx={{ color: "#006A66" }} />
             </IconButton>
           </Link>
 
@@ -246,7 +274,14 @@ const HomeTable = ({
   const [orderBy, setOrderBy] = React.useState("calories");
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
+  const [size, setSize] = useState(window.innerWidth);
+  useEffect(() => {
+    function handleResize() {
+      setSize(window.innerWidth);
+    }
 
+    window.addEventListener("resize", handleResize);
+  }, [size]);
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === "asc";
     setOrder(isAsc ? "desc" : "asc");
@@ -273,11 +308,18 @@ const HomeTable = ({
 
   return (
     <Box sx={{ width: "100%", color: "#006A66" }}>
-      <Paper sx={{ width: "100%", mb: 2, color: "#006A66" }}>
+      <Paper
+        sx={{
+          width: "100%",
+          mb: 2,
+          color: "#006A66",
+          borderTop: "1px solid #ededed",
+        }}
+      >
         <EnhancedTableToolbar click={handleDleteModal} selected={selected} />
         <TableContainer>
           <Table
-            sx={{ minWidth: 750 }}
+            // sx={{ minWidth: 750 }}
             aria-labelledby="tableTitle"
             size={"medium"}
           >
@@ -325,22 +367,21 @@ const HomeTable = ({
                       >
                         {row.name}
                       </TableCell>
-                      <TableCell align="center">{row.voltage}</TableCell>
-                      <TableCell align="center">{row.current}</TableCell>
-                      <TableCell align="center">{row.temprature}</TableCell>
+
+                      {size > 603 && (
+                        <TableCell align="left">{row.location}</TableCell>
+                      )}
                       <TableCell>
-                        <Link to={`/home/${row.id}`}>
+                        <Link to={`/home/status/${row.id}`}>
                           <IconButton>
-                            <RemoveRedEyeOutlinedIcon
-                              sx={{ color: "#006A66" }}
-                            />
+                            <BarChartIcon sx={{ color: "#006A66" }} />
                           </IconButton>
                         </Link>
                       </TableCell>
                       <TableCell>
-                        <Link to={`/home/edit/${row.id}`}>
+                        <Link to={`/home/${row.id}`}>
                           <IconButton>
-                            <BorderColorOutlinedIcon
+                            <RemoveRedEyeOutlinedIcon
                               sx={{ color: "#006A66" }}
                             />
                           </IconButton>

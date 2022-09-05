@@ -6,10 +6,10 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
-import NavBar from "./NavBar";
 import PictureAsPdfIcon from "@mui/icons-material/PictureAsPdf";
-import { Link } from "react-router-dom";
-import { IconButton } from "@mui/material";
+import { Link, useParams } from "react-router-dom";
+import { Button, IconButton } from "@mui/material";
+import NavBar from "../components/NavBar";
 
 function createData(name, calories) {
   return { name, calories };
@@ -22,19 +22,46 @@ const rows = [
     current: 6,
     temprature: 223,
     oilLevel: "34%",
-
+    id: "ksdfsdm",
+    location: "saris",
+    attachments: ["First file1 about transfomrer", "Second file", "File3"],
+  },
+  {
+    name: "mac 2",
+    voltage: 12,
+    current: 6,
+    temprature: 223,
+    oilLevel: "34%",
+    id: "ksdfm",
+    location: "saris",
+    attachments: ["First file1 about transfomrer", "Second file", "File3"],
+  },
+  {
+    name: "mac 2",
+    voltage: 12,
+    current: 6,
+    temprature: 223,
+    oilLevel: "34%",
+    id: "ksm",
     location: "saris",
     attachments: ["First file1 about transfomrer", "Second file", "File3"],
   },
 ];
 
 const ViewTransformer = () => {
+  const transformerId = useParams();
+  console.log("params", transformerId);
   return (
     <div>
-      <NavBar />
+      <NavBar type={"view"} />
+      <div className="flex w-[80%] mx-auto  justify-end my-7">
+        <Button sx={{ background: "#006A66" }} variant="contained">
+          Edit
+        </Button>
+      </div>
 
-      {rows.map((row) => (
-        <div>
+      {rows.map((row, i) => (
+        <div key={row.id}>
           <div>
             <h1 className="text-center my-10">
               PRIORITY : <span>HIGH</span>
@@ -54,10 +81,10 @@ const ViewTransformer = () => {
               </TableHead>
               <TableBody>
                 {Object.keys(row).map(
-                  (key) =>
+                  (key, i) =>
                     key !== "id" && (
                       <TableRow
-                        key={Date.now()}
+                        key={i}
                         sx={{
                           "&:last-child td, &:last-child th": { border: 0 },
                         }}
@@ -67,8 +94,8 @@ const ViewTransformer = () => {
                         </TableCell>
                         {key === "attachments" ? (
                           <TableCell align="right" width={300}>
-                            {row[key].map((value) => (
-                              <div className=" p-2">
+                            {row[key].map((value, index) => (
+                              <div key={index} className=" p-2">
                                 <Link to="/pdf">
                                   <IconButton>
                                     {" "}
