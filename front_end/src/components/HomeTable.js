@@ -57,16 +57,16 @@ function stableSort(array, comparator) {
 
 const headCells2 = [
   {
-    id: "View",
+    id: "Status",
+    numeric: false,
+    disablePadding: false,
+    label: "Status",
+  },
+  {
+    id: "view",
     numeric: false,
     disablePadding: false,
     label: "View",
-  },
-  {
-    id: "Edit",
-    numeric: false,
-    disablePadding: false,
-    label: "Edit",
   },
   {
     id: "delete",
@@ -263,6 +263,7 @@ EnhancedTableToolbar.propTypes = {
   selected: PropTypes.array.isRequired,
 };
 
+// *******************************************************  table component **************************************
 const HomeTable = ({
   rows,
   handleSelectAllClick,
@@ -275,6 +276,7 @@ const HomeTable = ({
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
   const [size, setSize] = useState(window.innerWidth);
+  // ******************************************************* use efect to get the screen width**************************************
   useEffect(() => {
     function handleResize() {
       setSize(window.innerWidth);
@@ -282,6 +284,8 @@ const HomeTable = ({
 
     window.addEventListener("resize", handleResize);
   }, [size]);
+
+  // *******************************************************  material ui sort functions **************************************
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === "asc";
     setOrder(isAsc ? "desc" : "asc");

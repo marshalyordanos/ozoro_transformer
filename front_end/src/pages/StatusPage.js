@@ -32,6 +32,7 @@ import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import dayjs from "dayjs";
+import RateForPlot from "../components/RateForPlot";
 ChartJS.register(
   CategoryScale,
   LinearScale,
@@ -134,7 +135,9 @@ const StatusPage = () => {
     setData(data);
     setTimeModal(true);
   };
-
+  const plotGraphHandler = () => {
+    setTimeModal(false);
+  };
   return (
     <StatusPageStyle className="">
       {/* ********************************************** navbar *********************************************** */}
@@ -497,10 +500,13 @@ const StatusPage = () => {
             </div>
           </div>
         </LocalizationProvider>
+        <div>
+          <RateForPlot />
+        </div>
         <div className="temp_btn justify-center flex">
           <button
             onClick={() =>
-              plotHandler(
+              plotGraphHandler(
                 ["a", "b", "c", "d", "e", "f", "g"],
                 [3, 8, 5, 9, 3, 5, 6],
                 "Temprature chart"

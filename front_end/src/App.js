@@ -3,6 +3,7 @@ import "./App.css";
 import ViewTransformer from "./pages/ViewTransformer";
 import HomePage from "./pages/HomePage";
 import StatusPage from "./pages/StatusPage";
+import TableTab from "./components/TableTab";
 
 function App() {
   return (
@@ -11,6 +12,7 @@ function App() {
         <Route path="/home" element={<HomePage />} />
         <Route path="/home/:id" element={<ViewTransformer />} />
         <Route path="/home/status/:id" element={<StatusPage />} />
+        <Route path="/home/tab" element={<TableTab />} />
 
         <Route path="/home/edit/:id" element={<h1>edit page</h1>} />
       </Routes>
