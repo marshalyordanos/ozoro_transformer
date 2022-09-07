@@ -78,12 +78,18 @@ const NavBar = ({ handleFilter, transformerSearchHandler, type }) => {
 
         {/* navbar icons */}
         <div className="navbar__icons pl-10 pr-5  space-x-6 ">
-          <IconButton>
-            <CalendarMonthOutlinedIcon sx={{ color: "white", fontSize: 32 }} />
-          </IconButton>
-          <IconButton>
-            <NoteAddOutlinedIcon sx={{ color: "white", fontSize: 32 }} />
-          </IconButton>
+          <Link to="/schedule">
+            <IconButton>
+              <CalendarMonthOutlinedIcon
+                sx={{ color: "white", fontSize: 32 }}
+              />
+            </IconButton>
+          </Link>
+          <Link to="/create">
+            <IconButton>
+              <NoteAddOutlinedIcon sx={{ color: "white", fontSize: 32 }} />
+            </IconButton>
+          </Link>
           <IconButton>
             <NotificationsOutlinedIcon sx={{ color: "white", fontSize: 32 }} />
           </IconButton>
@@ -107,16 +113,20 @@ const NavBar = ({ handleFilter, transformerSearchHandler, type }) => {
               "aria-labelledby": "basic-button",
             }}
           >
-            <MenuItem onClick={handleClose}>
-              <CalendarMonthOutlinedIcon
-                sx={{ color: "#006A66", fontSize: 28 }}
-              />{" "}
-              Schedule
-            </MenuItem>
-            <MenuItem onClick={handleClose}>
-              <NoteAddOutlinedIcon sx={{ color: "#006A66", fontSize: 28 }} />{" "}
-              Create Transformer
-            </MenuItem>
+            <Link to="/schedule">
+              <MenuItem onClick={handleClose}>
+                <CalendarMonthOutlinedIcon
+                  sx={{ color: "#006A66", fontSize: 28 }}
+                />{" "}
+                Schedule
+              </MenuItem>
+            </Link>
+            <Link to="/create">
+              <MenuItem onClick={handleClose}>
+                <NoteAddOutlinedIcon sx={{ color: "#006A66", fontSize: 28 }} />{" "}
+                Create Transformer
+              </MenuItem>
+            </Link>
             <MenuItem onClick={handleClose}>
               {" "}
               <NotificationsOutlinedIcon

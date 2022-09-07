@@ -3,19 +3,20 @@ import React from "react";
 import CloseIcon from "@mui/icons-material/Close";
 import styled from "styled-components";
 
-const FilterConditions = ({ condition, closFilterCondition }) => {
+const FilterConditions = ({ condition, closFilterCondition, name }) => {
+  const id = condition?.id || name;
   return (
-    <FilterStyled
-      key={condition.id}
-      className=" flex  min-w-[180px] self-center  items-center justify-between border-[1px]  hover:border-[#006A66] p-2 rounded-full m-2"
-    >
-      <p className="  ">
-        {condition.type}{" "}
-        <span>
-          {condition.min}-{condition.max}
-        </span>
-      </p>
-      <IconButton onClick={() => closFilterCondition(condition.id)}>
+    <FilterStyled className=" flex  min-w-[180px] self-center  items-center justify-between border-[1px]  hover:border-[#006A66] p-2 rounded-full m-2">
+      {condition && (
+        <p className="  ">
+          {condition.type}{" "}
+          <span>
+            {condition.min}-{condition.max}
+          </span>
+        </p>
+      )}
+      {name && <p className="  ">{name}</p>}
+      <IconButton onClick={() => closFilterCondition(id)}>
         <CloseIcon sx={{ color: "#006A66" }} />
       </IconButton>
     </FilterStyled>
