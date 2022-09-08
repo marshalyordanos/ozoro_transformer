@@ -25,7 +25,7 @@ const toastOption = {
   // progress: undefined
 };
 
-const CreatePage = () => {
+const EditPage = () => {
   const [files, setFiles] = useState([]);
   const [selectedData, setSelectedData] = useState([]);
   const [temporarySubmit, setTemoporarySubmit] = useState([]);
@@ -46,16 +46,6 @@ const CreatePage = () => {
   });
   console.log("data", selectedData);
 
-  const selectedDataHandler = (id, checked) => {
-    let data;
-    if (checked == false) {
-      data = selectedData.filter((data) => data.id !== id);
-      setSelectedData([...data]);
-    } else {
-      data = temporarySubmit.filter((data) => data.id === id);
-      setSelectedData([...data, ...selectedData]);
-    }
-  };
   // **************************** capture basic data **********
   const onChangeFile = (file) => {
     // console.log("drag file", file);
@@ -91,50 +81,6 @@ const CreatePage = () => {
     }
   };
 
-  // **************************** submit one data to thedata **********
-  const submitTemporaryHandler = () => {
-    const data = {
-      id: basicValue.id,
-      name: basicValue.name,
-      location: basicValue.location,
-      serial: basicValue.serial,
-      rating: ratingDatas,
-      atachFiles: files,
-      isSubmited: false,
-    };
-    setTemoporarySubmit([data, ...temporarySubmit]);
-    setRatingDatas([]);
-    setFiles([]);
-    setBasicValue({ id: uuid(), name: "", location: "", serial: "" });
-  };
-  const submitHandler = () => {
-    const fd = new FormData();
-    const data = {
-      id: basicValue.id,
-      name: basicValue.name,
-      location: basicValue.location,
-      serial: basicValue.serial,
-      rating: ratingDatas,
-      atachFiles: files,
-      isSubmited: true,
-    };
-    fd.append("id", basicValue.id);
-    fd.append("name", basicValue.name);
-    fd.append("location", basicValue.location);
-    fd.append("serial", basicValue.serial);
-    if (editMode) {
-      const newData = temporarySubmit.filter(
-        (data) => data.id !== basicValue.id
-      );
-      setTemoporarySubmit([data, ...newData]);
-    } else {
-      setTemoporarySubmit([data, ...temporarySubmit]);
-    }
-    setRatingDatas([]);
-    setFiles([]);
-    setBasicValue({ id: uuid(), name: "", location: "", serial: "" });
-  };
-
   const editTransformerHandler = () => {
     const newData = temporarySubmit.filter((data) => data.id !== basicValue.id);
     const data = {
@@ -152,30 +98,7 @@ const CreatePage = () => {
     setFiles([]);
     setBasicValue({ id: uuid(), name: "", location: "", serial: "" });
   };
-  const editTemporaryHandler = (id) => {
-    const editableData = temporarySubmit.filter((data) => data.id === id);
-    setEditData(editableData[0]);
-    setEditMode(true);
-    setBasicValue({
-      name: editableData[0].name,
-      id: editableData[0].id,
 
-      location: editableData[0].location,
-      serial: editableData[0].serial,
-    });
-    setRatingDatas(editableData[0].rating);
-    setFiles(editableData[0].atachFiles);
-  };
-
-  const selectAll = (event) => {
-    if (event.target.checked) {
-      const data = temporarySubmit.filter((d) => d.isSubmited === false);
-      setSelectedData(data);
-      return;
-    }
-    setSelectedData([]);
-    console.log("ssss", event.target.checked);
-  };
   return (
     <CreatePageStyle>
       <div className="">
@@ -357,69 +280,11 @@ const CreatePage = () => {
             </div>
           </div>
           <div className="w-[90vw] flex mx-auto m-5 justify-end">
-            {editMode ? (
-              <button
-                onClick={editTransformerHandler}
-                className="bg-[#bcaf00] mx-2 text-white py-2 px-8 rounded "
-              >
-                Edit
-              </button>
-            ) : (
-              <button
-                onClick={submitTemporaryHandler}
-                className="bg-[#006A66] mx-2 text-white py-2 px-8 rounded "
-              >
-                Temporary Submit
-              </button>
-            )}
             <button
-              onClick={submitHandler}
-              className="bg-[#006A66] mx-2 text-white py-2 px-8 rounded "
+              onClick={editTransformerHandler}
+              className="bg-[#bcaf00] mx-2 text-white py-2 px-8 rounded "
             >
-              Submit
-            </button>
-          </div>
-
-          <div className="">
-            <h1 className="text-2xl text-[#006A66]  mt-5 mb-2 mx-5 ">
-              Information
-            </h1>
-            <div className=" bg-[#006A66] h-[3px] w-[90vw] mx-5 "></div>
-            <div className="flex items-center mt-10 justify-end w-[90vw]">
-              <Checkbox
-                onClick={selectAll}
-                checked={
-                  temporarySubmit.filter((data) => !data.isSubmited).length ===
-                  selectedData.length
-                    ? true
-                    : false
-                }
-                color="success"
-              />
-              <p>Select All</p>
-            </div>
-            <div className="w-[90vw] mt-5 mx-auto">
-              {temporarySubmit.map((data) => (
-                <CreateTransformationInfo
-                  key={data.id}
-                  editTemporaryHandler={editTemporaryHandler}
-                  id={data.id}
-                  selectedDataHandler={selectedDataHandler}
-                  serial={data.serial}
-                  name={data.name}
-                  location={data.location}
-                  isSubmited={data.isSubmited}
-                  selectedData={selectedData}
-                />
-              ))}
-            </div>
-          </div>
-          <div className="w-[90vw] flex mx-auto m-5 justify-end">
-            <button className="bg-[#006A66] mx-2 text-white py-2 px-8 rounded ">
-              Selected Submit
-            </button>
-            <button className="bg-[#006A66] mx-2 text-white py-2 px-8 rounded ">
-              Submit All
+              Edit
             </button>
           </div>
         </div>
@@ -531,4 +396,4 @@ const CreatePageStyle = styled.div`
   }
 `;
 
-export default CreatePage;
+export default EditPage;

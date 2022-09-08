@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import BorderColorIcon from "@mui/icons-material/BorderColor";
 import styled from "styled-components";
 const CreateTransformationInfo = ({
+  selectedData,
   name,
   id,
   location,
@@ -13,6 +14,8 @@ const CreateTransformationInfo = ({
 }) => {
   const [checked, setChecked] = useState(false);
   const [size, setSize] = useState(window.innerWidth);
+  const isSelected =
+    selectedData.find((value) => value.id === id) !== undefined;
 
   useEffect(() => {
     function handleResize() {
@@ -22,8 +25,8 @@ const CreateTransformationInfo = ({
     window.addEventListener("resize", handleResize);
   }, [size]);
   const handleChange = (id) => {
-    selectedDataHandler(id, !checked);
-    setChecked(!checked);
+    selectedDataHandler(id, !isSelected);
+    setChecked(!isSelected);
   };
 
   return (
@@ -32,6 +35,19 @@ const CreateTransformationInfo = ({
       <h2 className=" text-2xl">{name}</h2>
 
       {size > 700 && <p>{location}</p>}
+      {size > 700 && (
+        <div className="flex">
+          <div className="flex justify-center items-center bg-yellow-500 mx-1 min-w-[40px] px-1 h-[30px]">
+            <p className="text-white font-bold ">10v</p>
+          </div>
+          <div className="flex justify-center items-center bg-blue-200 mx-1 min-w-[40px] px-1 h-[30px]">
+            <p className="text-[#006A66] font-bold ">1323v</p>
+          </div>
+          <div className="flex justify-center items-center bg-red-500 mx-1 min-w-[40px] px-1 h-[30px]">
+            <p className="text-white font-bold">10v</p>
+          </div>
+        </div>
+      )}
       <div className="flex items-center">
         {!isSubmited && (
           <p className="my-0 py-0 mx-3">
@@ -48,7 +64,7 @@ const CreateTransformationInfo = ({
         )}
         <Checkbox
           disabled={isSubmited}
-          checked={isSubmited ? true : checked}
+          checked={isSubmited ? true : isSelected}
           onChange={() => handleChange(id)}
           value={isSubmited}
           color="success"

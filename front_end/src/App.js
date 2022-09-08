@@ -6,6 +6,7 @@ import StatusPage from "./pages/StatusPage";
 import TableTab from "./components/TableTab";
 import CreatePage from "./pages/CreatePage";
 import SchedulePage from "./pages/SchedulePage";
+import EditPage from "./pages/EditPage";
 
 function App() {
   return (
@@ -16,6 +17,8 @@ function App() {
         <Route path="/home/status/:id" element={<StatusPage />} />
         <Route path="/home/tab" element={<TableTab />} />
         <Route path="/create" element={<CreatePage />} />
+        <Route path="/edit/:id" element={<EditPage />} />
+
         <Route path="/schedule" element={<SchedulePage />} />
 
         <Route path="/home/edit/:id" element={<h1>edit page</h1>} />

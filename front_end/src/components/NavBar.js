@@ -43,7 +43,7 @@ const NavBar = ({ handleFilter, transformerSearchHandler, type }) => {
           width={size < 472 ? 30 : 50}
           height={size < 472 ? 30 : 50}
         />
-        {type === "view" ? (
+        {type !== "home" ? (
           <Link to="/home">
             <IconButton>
               <Home sx={{ color: "white", fontSize: size < 472 ? 24 : 32 }} />

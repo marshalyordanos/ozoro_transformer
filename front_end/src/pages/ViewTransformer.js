@@ -55,9 +55,11 @@ const ViewTransformer = () => {
     <div>
       <NavBar type={"view"} />
       <div className="flex w-[80%] mx-auto  justify-end my-7">
-        <Button sx={{ background: "#006A66" }} variant="contained">
-          Edit
-        </Button>
+        <Link to={`/edit/${"skmlkmk"}`}>
+          <Button sx={{ background: "#006A66" }} variant="contained">
+            Edit
+          </Button>
+        </Link>
       </div>
 
       {rows.map((row, i) => (
