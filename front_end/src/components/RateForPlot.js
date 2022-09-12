@@ -1,7 +1,7 @@
 import React from "react";
 
 const RateForPlot = () => {
-  return <div>RateForPlot</div>;
+  return <div></div>;
 };
 
 export default RateForPlot;

@@ -11,6 +11,7 @@ const CreateTransformationInfo = ({
   isSubmited,
   selectedDataHandler,
   editTemporaryHandler,
+  ratings,
 }) => {
   const [checked, setChecked] = useState(false);
   const [size, setSize] = useState(window.innerWidth);
@@ -37,15 +38,22 @@ const CreateTransformationInfo = ({
       {size > 700 && <p>{location}</p>}
       {size > 700 && (
         <div className="flex">
-          <div className="flex justify-center items-center bg-yellow-500 mx-1 min-w-[40px] px-1 h-[30px]">
-            <p className="text-white font-bold ">10v</p>
-          </div>
-          <div className="flex justify-center items-center bg-blue-200 mx-1 min-w-[40px] px-1 h-[30px]">
-            <p className="text-[#006A66] font-bold ">1323v</p>
+          {ratings.slice(0, 3).map((rate, i) => (
+            <div
+              key={i}
+              className={`flex justify-center items-center ${
+                i == 0 ? "bg-yellow-500" : i == 1 ? "bg-blue-200" : "bg-red-500"
+              } mx-1 min-w-[40px] px-1 h-[30px]`}
+            >
+              <p className="text-white font-bold ">{rate.value}</p>
+            </div>
+          ))}
+          {/* <div className="flex justify-center items-center bg-blue-200 mx-1 min-w-[40px] px-1 h-[30px]">
+            <p className="text-[#006A66] font-bold ">{ratings[1].value}</p>
           </div>
           <div className="flex justify-center items-center bg-red-500 mx-1 min-w-[40px] px-1 h-[30px]">
-            <p className="text-white font-bold">10v</p>
-          </div>
+            <p className="text-white font-bold">{ratings[2].value}</p>
+          </div> */}
         </div>
       )}
       <div className="flex items-center">

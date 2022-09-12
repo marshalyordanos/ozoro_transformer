@@ -25,7 +25,7 @@ const toastOption = {
   // progress: undefined
 };
 
-const CreatePage = () => {
+const CreatePage = ({ handleUserOpen }) => {
   const [files, setFiles] = useState([]);
   const [selectedData, setSelectedData] = useState([]);
   const [temporarySubmit, setTemoporarySubmit] = useState([]);
@@ -179,7 +179,7 @@ const CreatePage = () => {
   return (
     <CreatePageStyle>
       <div className="">
-        <NavBar />
+        <NavBar handleOpen={handleUserOpen} />
       </div>
       <div className=" w-[94vw] mx-auto ">
         <div>
@@ -385,19 +385,21 @@ const CreatePage = () => {
               Information
             </h1>
             <div className=" bg-[#006A66] h-[3px] w-[90vw] mx-5 "></div>
-            <div className="flex items-center mt-10 justify-end w-[90vw]">
-              <Checkbox
-                onClick={selectAll}
-                checked={
-                  temporarySubmit.filter((data) => !data.isSubmited).length ===
-                  selectedData.length
-                    ? true
-                    : false
-                }
-                color="success"
-              />
-              <p>Select All</p>
-            </div>
+            {temporarySubmit.length > 0 && (
+              <div className="flex items-center mt-10 justify-end w-[90vw]">
+                <Checkbox
+                  onClick={selectAll}
+                  checked={
+                    temporarySubmit.filter((data) => !data.isSubmited)
+                      .length === selectedData.length
+                      ? true
+                      : false
+                  }
+                  color="success"
+                />
+                <p>Select All</p>
+              </div>
+            )}
             <div className="w-[90vw] mt-5 mx-auto">
               {temporarySubmit.map((data) => (
                 <CreateTransformationInfo
@@ -409,6 +411,7 @@ const CreatePage = () => {
                   name={data.name}
                   location={data.location}
                   isSubmited={data.isSubmited}
+                  ratings={data.rating}
                   selectedData={selectedData}
                 />
               ))}

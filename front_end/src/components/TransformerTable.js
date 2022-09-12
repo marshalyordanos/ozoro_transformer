@@ -55,7 +55,14 @@ export default function TransformerTable({
   const [page, setPage] = React.useState(0);
   const [dense, setDense] = React.useState(false);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
+  const [size, setSize] = React.useState(window.innerWidth);
+  React.useEffect(() => {
+    function handleResize() {
+      setSize(window.innerWidth);
+    }
 
+    window.addEventListener("resize", handleResize);
+  }, [size]);
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
@@ -81,11 +88,7 @@ export default function TransformerTable({
     <Box sx={{ width: "100%" }}>
       <Paper sx={{ width: "100%", mb: 2 }}>
         <TableContainer>
-          <Table
-            sx={{ minWidth: 750 }}
-            aria-labelledby="tableTitle"
-            size={dense ? "small" : "medium"}
-          >
+          <Table aria-labelledby="tableTitle" size={dense ? "small" : "medium"}>
             <TableHead>
               <StyledTableRow>
                 <StyledTableCell padding="checkbox">
@@ -104,14 +107,24 @@ export default function TransformerTable({
                   />
                 </StyledTableCell>
 
-                <StyledTableCell align="left"> No </StyledTableCell>
+                {size > 800 && (
+                  <StyledTableCell align="left"> No </StyledTableCell>
+                )}
 
-                <StyledTableCell align="left">ID </StyledTableCell>
+                {size > 800 && (
+                  <StyledTableCell align="left">ID </StyledTableCell>
+                )}
 
                 <StyledTableCell align="left">Name</StyledTableCell>
-                <StyledTableCell align="left">Location</StyledTableCell>
+                {size > 800 && (
+                  <StyledTableCell align="left">Location</StyledTableCell>
+                )}
                 <StyledTableCell align="left">Priority</StyledTableCell>
-                <StyledTableCell align="left">Information</StyledTableCell>
+                <StyledTableCell align="left">Status</StyledTableCell>
+
+                {size > 800 && (
+                  <StyledTableCell align="left">Information</StyledTableCell>
+                )}
               </StyledTableRow>
             </TableHead>
             <TableBody>
@@ -142,33 +155,41 @@ export default function TransformerTable({
                         }}
                       />
                     </StyledTableCell>
-                    <StyledTableCell align="left">
-                      {" "}
-                      {index + 1}{" "}
-                    </StyledTableCell>
-
-                    <StyledTableCell
-                      component="th"
-                      id={labelId}
-                      scope="row"
-                      align="left"
-                    >
-                      {row.id}
-                    </StyledTableCell>
+                    {size > 800 && (
+                      <StyledTableCell align="left">
+                        {" "}
+                        {index + 1}{" "}
+                      </StyledTableCell>
+                    )}
+                    {size > 800 && (
+                      <StyledTableCell
+                        component="th"
+                        id={labelId}
+                        scope="row"
+                        align="left"
+                      >
+                        {row.id}
+                      </StyledTableCell>
+                    )}{" "}
                     <StyledTableCell align="left">{row.name}</StyledTableCell>
-                    <StyledTableCell align="left">
-                      {row.location}
-                    </StyledTableCell>
+                    {size > 800 && (
+                      <StyledTableCell align="left">
+                        {row.location}
+                      </StyledTableCell>
+                    )}
                     <StyledTableCell align="left">
                       {row.priority}
                     </StyledTableCell>
-                    <StyledTableCell align="left">
-                      <Link to={`/home/status/${row.id}`}>
-                        <IconButton>
-                          <BarChartIcon sx={{ color: "#006A66" }} />
-                        </IconButton>
-                      </Link>
-                    </StyledTableCell>
+                    <StyledTableCell align="left">{row.status}</StyledTableCell>
+                    {size > 800 && (
+                      <StyledTableCell align="left">
+                        <Link to={`/home/status/${row.id}`}>
+                          <IconButton>
+                            <BarChartIcon sx={{ color: "#006A66" }} />
+                          </IconButton>
+                        </Link>
+                      </StyledTableCell>
+                    )}
                   </StyledTableRow>
                 );
               })}

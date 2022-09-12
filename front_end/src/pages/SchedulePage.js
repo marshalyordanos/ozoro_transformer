@@ -14,7 +14,10 @@ import { Description } from "@mui/icons-material";
 import ScheduleTable1 from "../components/ScheduleTable1";
 import TransformerTable from "../components/TransformerTable";
 import Terminal from "../components/Terminal";
+import RemoveCircleOutlineIcon from "@mui/icons-material/RemoveCircleOutline";
+import { data } from "autoprefixer";
 
+/***************************** toast options *********************************************** */
 const toastOption = {
   position: "top-right",
   autoClose: 5000,
@@ -26,28 +29,10 @@ const toastOption = {
   // progress: undefined
 };
 
-const tData = [
-  {
-    name: "Mark1",
-    location: "nole",
-    priority: "high",
-    id: "13232jn23ssda23jn23",
-  },
-  {
-    name: "Mark1",
-    location: "nole",
-    priority: "high",
-    id: "13232jn2323jn23",
-  },
-  {
-    name: "Mark1",
-    location: "nole",
-    priority: "high",
-    id: "13232jn2323jn2ds3",
-  },
-];
+/************************************ dummy data for transformaer ********************* */
+// const tData =;
 
-const SchedulePage = () => {
+const SchedulePage = ({ handleUserOpen }) => {
   const [selectedTransformer, setSelectedTransformer] = React.useState([]);
 
   const [selectedSchedule, setSelectedSchedule] = React.useState([]);
@@ -73,11 +58,120 @@ const SchedulePage = () => {
       description: "some description",
       id: "akmlk",
     },
+    {
+      name: ["wwww", "selam"],
+      type: "wwwwwwwww",
+      date: "12/10/2017",
+      description: "some description",
+      id: "akmwwlk",
+    },
   ]);
-  const [transformerData, setTransformerData] = useState(tData);
+  const [transformerData, setTransformerData] = useState([
+    {
+      name: "Mark1",
+      location: "nole",
+      status: "Scheduled",
+      priority: "high",
+      id: "13232jn23ssda23jn23",
+    },
+    {
+      name: "new Transformer",
+      location: "nole",
+      status: "non scheduled",
+      priority: "high",
+      id: "13232jn23sjnkjsda23jn23",
+    },
+    {
+      name: "transformer 4",
+      location: "nole",
+      status: "Scheduled",
+      priority: "high",
+      id: "13232jn23qq23sjnkjsda23jn23",
+    },
+    {
+      name: "trenasformer 3",
+      location: "nole",
+      status: "Scheduled",
+      priority: "high",
+      id: "13232jn3223sjnkjsda23jn23",
+    },
+    {
+      name: "Mark1",
+      location: "nole",
+      status: "scheduled",
+      priority: "high",
+      id: "13232jn2323jn2ds3",
+    },
+  ]);
+  const [transformerSearch, setTransformerSearch] = useState("");
+  const [scheduleSearch, setScheduleSearch] = useState("");
+  const [isSearching, setIsSearching] = useState(false);
+  const [isSearchingTrans, setIsSearchingTrans] = useState(false);
 
-  useEffect(() => {}, []);
+  const [scheduleSearchedData, setScheduleSearchedData] = useState([]);
+  const [transformerSearchedData, setTransformerSearchedData] = useState([]);
 
+  /****************************************** search transdormer and schedule */
+
+  const scheduleSearchHandler = (event) => {
+    const search = event.target.value.trim().toLowerCase();
+    const regx = new RegExp(search, "g");
+    let newData;
+
+    if (search === "") {
+      setIsSearching(false);
+      newData = [...scheduleData];
+    } else {
+      setIsSearching(true);
+      newData = scheduleData.filter((row) => regx.test(row.type.toLowerCase()));
+    }
+    setScheduleSearchedData(newData);
+  };
+  const transformerSearchHandler = (event) => {
+    const search = event.target.value.trim().toLowerCase();
+    const regx = new RegExp(search, "g");
+    let newData;
+
+    if (search === "") {
+      setIsSearchingTrans(false);
+      newData = [...transformerData];
+    } else {
+      setIsSearchingTrans(true);
+      newData = transformerData.filter((row) =>
+        regx.test(row.name.toLowerCase())
+      );
+    }
+    setTransformerSearchedData(newData);
+  };
+
+  /***********************************************  delete functoin for the schedule *********************** */
+  const handleScheduleDelete = () => {
+    if (selectedSchedule.length > 0) {
+      let datas = scheduleData;
+      selectedSchedule.forEach((v) => {
+        datas = datas.filter((data) => data.id !== v.id);
+      });
+      // console.log("delete", datas, selectedSchedule);
+      setSceduleData(datas);
+    } else {
+      toast.error("first Select  ", toastOption);
+    }
+    // setSceduleData();
+  };
+  const handleTransformerDelete = () => {
+    if (selectedTransformer.length > 0) {
+      let datas = transformerData;
+      selectedTransformer.forEach((v) => {
+        datas = datas.filter((data) => data.id !== v.id);
+      });
+      setTransformerData(datas);
+    } else {
+      toast.error("first Select  ", toastOption);
+    }
+    // setSceduleData();
+  };
+
+  /********************************************** handle besic data {name, type,description } **************** */
   const handleBasicDataChange = (e) => {
     setBasicValue({ ...basicData, [e.target.name]: e.target.value });
   };
@@ -85,14 +179,21 @@ const SchedulePage = () => {
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
+
+  /********************************************** handle date change **************** */
   const handleDateChange = (newValue) => {
     setDateValue(newValue);
   };
+
+  /********************************************** delete name **************** */
+
   const deleteName = (id) => {
     const newNames = names.filter((name) => id !== name);
-    console.log(newNames, names);
+    // console.log(newNames, names);
     setNames(newNames);
   };
+
+  /********************************************** submit function  **************** */
 
   const submitScheduleHandler = () => {
     const { name, description, type } = basicData;
@@ -105,17 +206,31 @@ const SchedulePage = () => {
       toast.error("Please provide valid type", toastOption);
     } else if (!description) {
       toast.error("Please provide valid description", toastOption);
+    } else if (selectedTransformer.length === 0) {
+      toast.error("Please selecet Transformer first", toastOption);
+      setTabChanger("t");
+      window.scrollTo({ top: 500, left: 0, behavior: "smooth" });
     } else {
       const data = {
         name: names,
         type: type,
         description: description,
+        transformerData: selectedTransformer.map((tr) => tr.id),
         date: dateValue.$D + "/" + dateValue.$m + "/" + dateValue.$y,
       };
       setSceduleData([data, ...scheduleData]);
+      setBasicValue({ name: "", description: "", type: "" });
+      setNames([]);
+      setTabChanger("s");
+      setSelectedTransformer([]);
+
+      window.scrollTo({ top: 500, left: 0, behavior: "smooth" });
     }
   };
-  console.log("data", scheduleData);
+  // console.log("data", selectedTransformer);
+
+  /********************************************** transformer select **************** */
+
   const handleSelectAllClickTransfomer = (event) => {
     if (event.target.checked) {
       const newSelected = transformerData;
@@ -126,7 +241,7 @@ const SchedulePage = () => {
   };
 
   const handleSelectClickTransFormer = (event, row) => {
-    console.log(":;;;;;;;");
+    // console.log(":;;;;;;;");
     if (!event.target.checked) {
       const newSelected = selectedTransformer?.filter((n) => n.id !== row.id);
       setSelectedTransformer([...newSelected]);
@@ -134,6 +249,9 @@ const SchedulePage = () => {
     }
     setSelectedTransformer([...selectedTransformer, row]);
   };
+
+  /********************************************** schedule  **************** */
+
   const handleSelectAllClickSchedule = (event) => {
     if (event.target.checked) {
       const newSelected = scheduleData;
@@ -144,7 +262,7 @@ const SchedulePage = () => {
   };
 
   const handleSelectClickSchedule = (event, row) => {
-    console.log(":;;;;;;;");
+    // console.log(":;;;;;;;");
     if (!event.target.checked) {
       const newSelected = selectedSchedule?.filter((n) => n.id !== row.id);
       setSelectedSchedule([...newSelected]);
@@ -154,18 +272,18 @@ const SchedulePage = () => {
   };
   return (
     <SchedulePageStyle>
-      <NavBar type={"view"} />
-      <div className="">
-        <div className="">
-          <div className="flex mt-[5vh] w-[90vw] mx-auto justify-between">
+      <NavBar handleOpen={handleUserOpen} type={"view"} />
+      <div className="con">
+        <div className="top__con">
+          <div className="name__type flex mt-[5vh] w-[90vw] mx-auto justify-between">
             <div className="  text-[#006A66]">
               <p className=" text-xl mb-2">Maintenance Personnel</p>
-              <div className="flex justify-between items-center border-[1px] px-2 rounded-lg border-[#006A66] w-[40vw]">
+              <div className="input__field flex justify-between items-center border-[1px] px-2 rounded-lg border-[#006A66] w-[40vw]">
                 <input
                   name="name"
                   value={basicData.name}
                   onChange={handleBasicDataChange}
-                  className=" rounded py-3 px-4 w-[90%] outline-none  "
+                  className="input__field rounded py-3 px-4 w-[90%] outline-none  "
                   type={"text"}
                 />
                 <IconButton
@@ -186,21 +304,34 @@ const SchedulePage = () => {
                 </IconButton>
               </div>
             </div>
+            <div className="forMobile hidden w-[90vw] mx-auto ">
+              <div className="flex justify-center  flex-wrap w-[90vw]">
+                {names.length > 0 &&
+                  names.map((n, i) => (
+                    <div key={i} className="">
+                      <FilterConditions
+                        closFilterCondition={deleteName}
+                        name={n}
+                      />
+                    </div>
+                  ))}
+              </div>
+            </div>
 
             <div className=" text-[#006A66]">
               <p className="text-xl mb-2">Type</p>
-              <div className="flex justify-between items-center border-[1px] px-2 rounded-lg border-[#006A66] w-[40vw]">
+              <div className=" input__field flex justify-between items-center border-[1px] px-2 rounded-lg border-[#006A66] w-[40vw]">
                 <input
                   name="type"
                   value={basicData.type}
                   onChange={handleBasicDataChange}
-                  className=" rounded py-3 px-4 w-[90%] outline-none  "
+                  className="input__field rounded py-3 px-4 w-[90%] outline-none  "
                   type={"text"}
                 />
               </div>
             </div>
           </div>
-          <div className=" w-[90vw] mx-auto ">
+          <div className="forDesktop w-[90vw] mx-auto ">
             <div className=" w-[40vw]">
               {names.length > 0 &&
                 names.map((n, i) => (
@@ -213,13 +344,13 @@ const SchedulePage = () => {
                 ))}
             </div>
           </div>
-          <div className="flex my-[3vh] w-[90vw] mx-auto justify-between">
+          <div className=" date__desc flex my-[3vh] w-[90vw] mx-auto justify-between">
             <div className=" text-xl text-[#006A66]">
               <p className=" mb-2">Date</p>
               <div className=" ">
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
                   <DesktopDatePicker
-                    className="date w-[40vw] border-[1px solid red] "
+                    className="input__field date w-[40vw] border-[1px solid red] "
                     inputFormat="MM/DD/YYYY"
                     value={dateValue}
                     onChange={handleDateChange}
@@ -230,7 +361,7 @@ const SchedulePage = () => {
             </div>
             <div className=" text-xl text-[#006A66]">
               <p className=" mb-2">Description</p>
-              <div className=" border-[1px] px-1 rounded-lg border-[#006A66] w-[40vw]">
+              <div className="input__field border-[1px] px-1 rounded-lg border-[#006A66] w-[40vw]">
                 <textarea
                   className=" rounded-lg py-2 px-4 w-[100%] outline-none  "
                   id="story"
@@ -253,7 +384,7 @@ const SchedulePage = () => {
           </div>
         </div>
         <div className="w-[90vw] mx-auto">
-          <div>
+          <div className="table__header flex items-center justify-between">
             <div className="tab flex">
               <p
                 onClick={() => setTabChanger("s")}
@@ -272,7 +403,40 @@ const SchedulePage = () => {
                 Transformer
               </p>
             </div>
-            <div></div>
+            <div>
+              {tabChanger == "s" && (
+                <div>
+                  <input
+                    className=" border-[1px] px-3 py-[1px] rounded border-[lightgray] "
+                    placeholder="search"
+                    // value={transformerSearch}
+                    onChange={scheduleSearchHandler}
+                  />
+                  <IconButton
+                    sx={{ height: 36 }}
+                    onClick={handleScheduleDelete}
+                  >
+                    <RemoveCircleOutlineIcon sx={{ color: "#006A66" }} />
+                  </IconButton>
+                </div>
+              )}
+              {tabChanger == "t" && (
+                <div>
+                  <input
+                    onChange={transformerSearchHandler}
+                    // value={scheduleSearch}
+                    className=" border-[1px] px-3 py-[1px] rounded border-[lightgray] "
+                    placeholder="search"
+                  />
+                  <IconButton
+                    sx={{ height: 36 }}
+                    onClick={handleTransformerDelete}
+                  >
+                    <RemoveCircleOutlineIcon sx={{ color: "#006A66" }} />
+                  </IconButton>
+                </div>
+              )}
+            </div>
           </div>
           <div className="table w-[90vw] mx-auto ">
             {tabChanger == "s" ? (
@@ -281,7 +445,7 @@ const SchedulePage = () => {
                 setSelected={setSelectedSchedule}
                 handleSelectClick={handleSelectClickSchedule}
                 handleSelectAllClick={handleSelectAllClickSchedule}
-                rows={scheduleData}
+                rows={isSearching ? scheduleSearchedData : scheduleData}
               />
             ) : (
               <TransformerTable
@@ -289,7 +453,9 @@ const SchedulePage = () => {
                 setSelected={setSelectedTransformer}
                 handleSelectClick={handleSelectClickTransFormer}
                 handleSelectAllClick={handleSelectAllClickTransfomer}
-                rows={transformerData}
+                rows={
+                  isSearchingTrans ? transformerSearchedData : transformerData
+                }
               />
             )}
 
@@ -314,6 +480,50 @@ const SchedulePageStyle = styled.div`
 
   .date {
     border: none;
+  }
+
+  @media screen and (max-width: 800px) {
+    .name__type,
+    .date__desc {
+      margin: 0px auto;
+      display: block;
+      width: 90vw;
+      .input__field,
+      input {
+        width: 90vw;
+      }
+    }
+
+    .forMobile {
+      display: flex;
+      width: 90vw;
+    }
+    .forDesktop {
+      display: none;
+    }
+
+    .rating__input__div {
+      width: 90vw;
+      margin: auto;
+    }
+    .rating__input__div__sm {
+      width: 40vw;
+      margin: auto;
+    }
+    .rating__body {
+      display: block;
+    }
+    .rating_display {
+      width: 90vw;
+      margin: auto;
+    }
+  }
+  @media screen and (max-width: 600px) {
+    .table__header {
+      display: flex;
+      flex-direction: column-reverse;
+      align-items: flex-start;
+    }
   }
 `;
 

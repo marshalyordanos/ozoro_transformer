@@ -86,7 +86,7 @@ export const data1 = {
   ],
 };
 
-const StatusPage = () => {
+const StatusPage = ({ handleUserOpen }) => {
   const [labels, setLables] = useState([
     "1h",
     "2h",
@@ -107,6 +107,22 @@ const StatusPage = () => {
   const fromList = ["a", "d", "c", "d", "e", "f", "g"];
   const [from, setFrom] = useState("");
   const [to, setTo] = useState("");
+  const [rateDate, setRateDate] = useState("day");
+  const [ratingDateArray, setRatingDateArray] = useState(["hr", "min", "sec"]);
+
+  const handleRateDateChange = (event) => {
+    const value = event.target.value;
+    setRateDate(value);
+    if (value == "hr") {
+      setRatingDateArray(["hr", "min", "sec"]);
+    } else if (value == "day") {
+      setRatingDateArray(["day", "hr", "min"]);
+    } else if (value == "month") {
+      setRatingDateArray(["month", "day", "hr"]);
+    } else if (value == "year") {
+      setRatingDateArray(["year", "month", "day"]);
+    }
+  };
 
   const handleFrom = (event) => {
     setFrom(event.target.value);
@@ -149,7 +165,7 @@ const StatusPage = () => {
           zIndex: 100,
         }}
       >
-        <NavBar type={"view"} />
+        <NavBar handleOpen={handleUserOpen} type={"view"} />
       </div>
 
       {/* ******  the body containar ********** */}
@@ -500,8 +516,44 @@ const StatusPage = () => {
             </div>
           </div>
         </LocalizationProvider>
-        <div>
-          <RateForPlot />
+        <div className="max-w-[330px] mx-auto   flex my-4">
+          <FormControl sx={{ minWidth: 100, marginRight: "20px" }}>
+            <InputLabel id="demo-simple-select-label">Age</InputLabel>
+            <Select
+              labelId="demo-simple-select-label"
+              id="demo-simple-select"
+              value={rateDate}
+              label="date"
+              onChange={handleRateDateChange}
+            >
+              <MenuItem value={"hr"}>Hour</MenuItem>
+              <MenuItem value={"day"}>day</MenuItem>
+              <MenuItem value={"month"}>month</MenuItem>
+              <MenuItem value={"year"}>year</MenuItem>
+            </Select>
+          </FormControl>
+          <div className="flex items-center">
+            <TextField
+              style={{ width: 50 }}
+              id="standard-basic"
+              label={ratingDateArray[0]}
+              variant="standard"
+            />
+            <p className="text-2xl px-1 self-end">/</p>
+            <TextField
+              style={{ width: 50 }}
+              id="standard-basic"
+              label={ratingDateArray[1]}
+              variant="standard"
+            />
+            <p className=" text-2xl px-1 self-end">/</p>
+            <TextField
+              style={{ width: 50 }}
+              id="standard-basic"
+              label={ratingDateArray[2]}
+              variant="standard"
+            />
+          </div>
         </div>
         <div className="temp_btn justify-center flex">
           <button

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import NavBar from "../components/NavBar";
 import styled from "styled-components";
 import { Checkbox, Divider } from "@mui/material";
@@ -25,7 +25,19 @@ const toastOption = {
   // progress: undefined
 };
 
-const EditPage = () => {
+const dummyData = {
+  id: "klmlkkmdlkssma",
+  location: "bole",
+  name: "Mark1",
+  Serail: "kjadnsjns",
+  ratings: [
+    { type: "valtage", value: 132, unit: "v" },
+    { type: "valtage-max", value: 132, unit: "v" },
+  ],
+  atachFiles: [{ name: "marshal" }, { name: "kirubel" }],
+};
+
+const EditPage = ({ handleUserOpen }) => {
   const [files, setFiles] = useState([]);
   const [selectedData, setSelectedData] = useState([]);
   const [temporarySubmit, setTemoporarySubmit] = useState([]);
@@ -46,6 +58,16 @@ const EditPage = () => {
   });
   console.log("data", selectedData);
 
+  useEffect(() => {
+    setBasicValue({
+      id: dummyData.id,
+      name: dummyData.name,
+      location: dummyData.location,
+      serial: dummyData.Serail,
+    });
+    setRatingDatas(dummyData.ratings);
+    setFiles(dummyData.atachFiles);
+  }, []);
   // **************************** capture basic data **********
   const onChangeFile = (file) => {
     // console.log("drag file", file);
@@ -99,10 +121,14 @@ const EditPage = () => {
     setBasicValue({ id: uuid(), name: "", location: "", serial: "" });
   };
 
+  const editHandler = () => {
+    const data = {};
+  };
+
   return (
     <CreatePageStyle>
       <div className="">
-        <NavBar />
+        <NavBar handleOpen={handleUserOpen} />
       </div>
       <div className=" w-[94vw] mx-auto ">
         <div>
@@ -281,7 +307,7 @@ const EditPage = () => {
           </div>
           <div className="w-[90vw] flex mx-auto m-5 justify-end">
             <button
-              onClick={editTransformerHandler}
+              onClick={editHandler}
               className="bg-[#bcaf00] mx-2 text-white py-2 px-8 rounded "
             >
               Edit

@@ -23,6 +23,8 @@ import FilterListIcon from "@mui/icons-material/FilterList";
 import { visuallyHidden } from "@mui/utils";
 import { styled } from "@mui/material/styles";
 import { tableCellClasses } from "@mui/material/TableCell";
+import { Link } from "react-router-dom";
+import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -52,7 +54,14 @@ export default function ScheduleTable1({
   const [page, setPage] = React.useState(0);
   const [dense, setDense] = React.useState(false);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
+  const [size, setSize] = React.useState(window.innerWidth);
+  React.useEffect(() => {
+    function handleResize() {
+      setSize(window.innerWidth);
+    }
 
+    window.addEventListener("resize", handleResize);
+  }, [size]);
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
@@ -75,11 +84,7 @@ export default function ScheduleTable1({
     <Box sx={{ width: "100%" }}>
       <Paper sx={{ width: "100%", mb: 2 }}>
         <TableContainer>
-          <Table
-            sx={{ minWidth: 750 }}
-            aria-labelledby="tableTitle"
-            size={dense ? "small" : "medium"}
-          >
+          <Table aria-labelledby="tableTitle" size={dense ? "small" : "medium"}>
             <TableHead>
               <StyledTableRow>
                 <StyledTableCell padding="checkbox">
@@ -98,15 +103,20 @@ export default function ScheduleTable1({
                   />
                 </StyledTableCell>
 
-                <StyledTableCell align="left"> No </StyledTableCell>
-
+                {size > 800 && (
+                  <StyledTableCell align="left"> No </StyledTableCell>
+                )}
                 <StyledTableCell align="left">
                   Maintenance Personnel{" "}
                 </StyledTableCell>
 
-                <StyledTableCell align="left">Type</StyledTableCell>
-                <StyledTableCell align="left">Date</StyledTableCell>
-                <StyledTableCell align="left">Description</StyledTableCell>
+                {size > 800 && (
+                  <StyledTableCell align="left">Type</StyledTableCell>
+                )}
+                {size > 800 && (
+                  <StyledTableCell align="left">Date</StyledTableCell>
+                )}
+                <StyledTableCell align="left">Detail</StyledTableCell>
               </StyledTableRow>
             </TableHead>
             <TableBody>
@@ -137,11 +147,13 @@ export default function ScheduleTable1({
                         }}
                       />
                     </StyledTableCell>
-                    <StyledTableCell align="left">
-                      {" "}
-                      {index + 1}{" "}
-                    </StyledTableCell>
 
+                    {size > 800 && (
+                      <StyledTableCell align="left">
+                        {" "}
+                        {index + 1}{" "}
+                      </StyledTableCell>
+                    )}
                     <StyledTableCell
                       component="th"
                       id={labelId}
@@ -150,10 +162,19 @@ export default function ScheduleTable1({
                     >
                       {row.name.join(", ")}
                     </StyledTableCell>
-                    <StyledTableCell align="left">{row.type}</StyledTableCell>
-                    <StyledTableCell align="left">{row.date}</StyledTableCell>
+                    {size > 800 && (
+                      <StyledTableCell align="left">{row.type}</StyledTableCell>
+                    )}
+                    {size > 800 && (
+                      <StyledTableCell align="left">{row.date}</StyledTableCell>
+                    )}
+
                     <StyledTableCell align="left">
-                      {row.description}
+                      <Link to={`/schedule/view/${row.id}`}>
+                        <IconButton>
+                          <RemoveRedEyeIcon sx={{ color: "#006A66" }} />
+                        </IconButton>
+                      </Link>
                     </StyledTableCell>
                   </StyledTableRow>
                 );

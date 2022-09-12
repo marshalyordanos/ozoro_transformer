@@ -82,7 +82,7 @@ const rows = [
     location: "megenagna",
   },
 ];
-const HomePage = () => {
+const HomePage = ({ handleUserOpen }) => {
   const [selected, setSelected] = React.useState([]);
   const [filterToggle, setFilterToggle] = React.useState(false);
   const [searchParametr, setSearchParameter] = useState("");
@@ -102,14 +102,12 @@ const HomePage = () => {
 
   const addFilterCondition = (type, min, max, opration) => {
     const id = Date.now();
-    const x = setTimeout(() => {
-      console.log("PPPPPPPPPPPPPPPP", type, min, max);
-      setAllCondition([...allCondition, { type, min, max, id, opration }]);
-      console.log("all condition", [
-        ...allCondition,
-        { type, min, max, id, opration },
-      ]);
-    }, 3000);
+    console.log("PPPPPPPPPPPPPPPP", type, min, max);
+    setAllCondition([...allCondition, { type, min, max, id, opration }]);
+    console.log("all condition", [
+      ...allCondition,
+      { type, min, max, id, opration },
+    ]);
   };
 
   const closFilterCondition = (id) => {
@@ -202,6 +200,7 @@ const HomePage = () => {
   return (
     <div>
       <NavBar
+        handleOpen={handleUserOpen}
         type="home"
         transformerSearchHandler={transformerSearchHandler}
         handleFilter={filterHandler}

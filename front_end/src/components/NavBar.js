@@ -14,7 +14,12 @@ import NotificationsOutlinedIcon from "@mui/icons-material/NotificationsOutlined
 import FilterListOutlinedIcon from "@mui/icons-material/FilterListOutlined";
 import HomeIcon from "@mui/icons-material/Home";
 import { Link } from "react-router-dom";
-const NavBar = ({ handleFilter, transformerSearchHandler, type }) => {
+const NavBar = ({
+  handleFilter,
+  transformerSearchHandler,
+  type,
+  handleOpen,
+}) => {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
   const [size, setSize] = useState(window.innerWidth);
@@ -78,6 +83,10 @@ const NavBar = ({ handleFilter, transformerSearchHandler, type }) => {
 
         {/* navbar icons */}
         <div className="navbar__icons pl-10 pr-5  space-x-6 ">
+          <span onClick={handleOpen} className=" cursor-pointer text-white">
+            Create user
+          </span>
+
           <Link to="/schedule">
             <IconButton>
               <CalendarMonthOutlinedIcon
@@ -113,6 +122,12 @@ const NavBar = ({ handleFilter, transformerSearchHandler, type }) => {
               "aria-labelledby": "basic-button",
             }}
           >
+            <MenuItem>
+              <NoteAddOutlinedIcon sx={{ color: "#006A66", fontSize: 28 }} />{" "}
+              <span onClick={handleOpen} className=" cursor-pointer ">
+                Create user
+              </span>
+            </MenuItem>
             <Link to="/schedule">
               <MenuItem onClick={handleClose}>
                 <CalendarMonthOutlinedIcon

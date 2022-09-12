@@ -48,12 +48,12 @@ const rows = [
   },
 ];
 
-const ViewTransformer = () => {
+const ViewTransformer = ({ handleUserOpen }) => {
   const transformerId = useParams();
   console.log("params", transformerId);
   return (
     <div>
-      <NavBar type={"view"} />
+      <NavBar handleOpen={handleUserOpen} type={"view"} />
       <div className="flex w-[80%] mx-auto  justify-end my-7">
         <Link to={`/edit/${"skmlkmk"}`}>
           <Button sx={{ background: "#006A66" }} variant="contained">

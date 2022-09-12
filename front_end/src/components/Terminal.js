@@ -5,7 +5,7 @@ import styled from "styled-components";
 const Terminal = () => {
   return (
     <TerminalStyle>
-      <div className="btn bg-[#a2230c]  z-100 w-14 h-14 rounded-full flex justify-center items-center  fixed right-12 bottom-10  ">
+      <div className="btn bg-[#000000]  z-100 w-14 h-14 rounded-full flex justify-center items-center  fixed right-12 bottom-10  ">
         <IconButton>
           <TerminalIcon sx={{ color: "white" }} />
         </IconButton>
