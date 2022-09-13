@@ -92,7 +92,7 @@ const ScheduleView = ({ handleUserOpen }) => {
   console.log("params", transformerId);
   const [nameValue, setNameValue] = React.useState("ET");
   const [names, setNames] = React.useState([]);
-  const [transformers, setTransformers] = React.useState();
+  const [transformers, setTransformers] = React.useState([]);
   const [basicData, setBasicValue] = React.useState({
     type: "",
     description: "",

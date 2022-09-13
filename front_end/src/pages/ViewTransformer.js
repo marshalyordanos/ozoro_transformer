@@ -62,7 +62,7 @@ const ViewTransformer = ({ handleUserOpen }) => {
         </Link>
       </div>
 
-      {rows.map((row, i) => (
+      {rows?.map((row, i) => (
         <div key={row.id}>
           <div>
             <h1 className="text-center my-10">
@@ -82,7 +82,7 @@ const ViewTransformer = ({ handleUserOpen }) => {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {Object.keys(row).map(
+                {Object.keys(row)?.map(
                   (key, i) =>
                     key !== "id" && (
                       <TableRow
@@ -96,7 +96,7 @@ const ViewTransformer = ({ handleUserOpen }) => {
                         </TableCell>
                         {key === "attachments" ? (
                           <TableCell align="right" width={300}>
-                            {row[key].map((value, index) => (
+                            {row[key]?.map((value, index) => (
                               <div key={index} className=" p-2">
                                 <Link to="/pdf">
                                   <IconButton>

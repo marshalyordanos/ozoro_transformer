@@ -239,9 +239,7 @@ const HomePage = ({ handleUserOpen }) => {
           rows={isSearching ? searchedData : allData}
         />
       </div>
-      <div>
-        <Terminal />
-      </div>
+      <div>{/* <Terminal /> */}</div>
       <ModalUi bg="none" open={isLoading}>
         <CircularProgress sx={{ color: "#006A66" }} />
       </ModalUi>

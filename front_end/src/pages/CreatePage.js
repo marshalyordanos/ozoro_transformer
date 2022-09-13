@@ -427,7 +427,7 @@ const CreatePage = ({ handleUserOpen }) => {
           </div>
         </div>
       </div>
-      <Terminal />
+      {/* <Terminal /> */}
       <ToastContainer />
     </CreatePageStyle>
   );

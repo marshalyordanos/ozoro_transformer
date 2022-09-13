@@ -466,7 +466,7 @@ const SchedulePage = ({ handleUserOpen }) => {
           </div>
         </div>
       </div>{" "}
-      <Terminal />
+      {/* <Terminal /> */}
       <ToastContainer />
     </SchedulePageStyle>
   );

@@ -315,7 +315,7 @@ const EditPage = ({ handleUserOpen }) => {
           </div>
         </div>
       </div>
-      <Terminal />
+      {/* <Terminal /> */}
       <ToastContainer />
     </CreatePageStyle>
   );

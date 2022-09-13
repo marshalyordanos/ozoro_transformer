@@ -1,4 +1,4 @@
-import { Route, Routes } from "react-router-dom";
+import { Navigate, Route, Routes } from "react-router-dom";
 import "./App.css";
 import ViewTransformer from "./pages/ViewTransformer";
 import HomePage from "./pages/HomePage";
@@ -19,6 +19,7 @@ function App() {
   return (
     <div className="con">
       <Routes>
+        <Route path="/" element={<Navigate to={"/home"}></Navigate>} />
         <Route
           path="/home"
           element={<HomePage handleUserOpen={handleOpen} />}
