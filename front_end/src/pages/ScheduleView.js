@@ -142,140 +142,145 @@ const ScheduleView = ({ handleUserOpen }) => {
 
       {/* *************************** table ************************ */}
       <div className=" w-[90vw] mx-auto my-[20px] ">
-        <TableContainer component={Paper}>
-          <Table aria-label="customized table">
-            <TableBody>
-              <StyledTableRow>
-                <StyledTableCell align="center">
-                  {"Maintenance Personnel"}
-                </StyledTableCell>
-                <StyledTableCell align="left">
-                  <div className=" flex items-center ">
-                    <FormControl sx={{ width: "100%", border: "none" }}>
-                      <Select
-                        sx={{ border: "none" }}
-                        value={nameValue}
-                        onChange={handleNameChange}
-                      >
-                        <MenuItem value="AFwdwefsd">Afghanistan</MenuItem>
-                        <MenuItem value="AsdsdfsdfX">Åland Islands</MenuItem>
-                        <MenuItem value="AsdfsdfL">Albania</MenuItem>
-                        <MenuItem value="DZsdfsdf">Algeria</MenuItem>
-                        <MenuItem value="AsdfsdfS">American Samoa</MenuItem>
-                        <MenuItem value="ADsdf">Andorra</MenuItem>
-                        <MenuItem value="AO">Angola</MenuItem>
-                        <MenuItem value="AI">Anguilla</MenuItem>
-                        <MenuItem value="AQ">Antarctica</MenuItem>
-                        <MenuItem value="AG">Antigua and Barbuda</MenuItem>
-                      </Select>
-                    </FormControl>
-                    <IconButton
-                      onClick={() => {
-                        console.log("alkmsckm");
-                        const uniqueName = names.filter(
-                          (name) => name === nameValue
-                        );
-                        if (!nameValue) {
-                          toast.error("Name must be provide name", toastOption);
-                        } else if (uniqueName.length > 0) {
-                          toast.error("Name must be unique", toastOption);
-                        } else {
-                          setNames([nameValue, ...names]);
-                        }
-                      }}
-                    >
-                      <AddCircleOutlineIcon />
-                    </IconButton>
-                  </div>
-                  {/* *********************************** show the add user ****************************** */}
-                  <div className=" w-[100%]   border-black ">
-                    <div className=" flex justify-center flex-wrap w-[100%]   mx-2 ">
-                      {names.length > 0 &&
-                        names.map((n, i) => (
-                          <div key={i}>
-                            <FilterConditions
-                              closFilterCondition={deleteName}
-                              name={n}
-                            />
-                          </div>
-                        ))}
-                    </div>
-                  </div>
-                </StyledTableCell>
-              </StyledTableRow>
-              <StyledTableRow>
-                <StyledTableCell align="center">
-                  <p>Type</p>
-                </StyledTableCell>
-                <StyledTableCell align="left">
-                  <div className="flex justify-between items-center border-[1px] py-1 px-2 rounded-lg border-[#c7c6c6] w-[100%]">
-                    <input
-                      // value={basicData.name}
-                      onChange={handleBasicDataChange}
-                      placeholder="type"
-                      name="type"
-                      value={basicData.type}
-                      className=" rounded py-3 px-4 w-[90%] outline-none  "
-                      type={"text"}
-                    />
-                  </div>
-                  {/* <TextField id="outlined-basic" variant="outlined" /> */}
-                </StyledTableCell>
-              </StyledTableRow>
-              <StyledTableRow>
-                <StyledTableCell align="center">{"Date"}</StyledTableCell>
-                <StyledTableCell align="left">
-                  <div className=" ">
-                    <LocalizationProvider dateAdapter={AdapterDayjs}>
-                      <DesktopDatePicker
-                        className="date w-[100%] border-[1px solid red] "
-                        inputFormat="MM/DD/YYYY"
-                        value={dateValue}
-                        onChange={handleDateChange}
-                        renderInput={(params) => <TextField {...params} />}
-                      />
-                    </LocalizationProvider>
-                  </div>
-                </StyledTableCell>
-              </StyledTableRow>
-              <StyledTableRow>
-                <StyledTableCell align="center">
-                  {"Description"}
-                </StyledTableCell>
-                <StyledTableCell align="left">
-                  <TextField
-                    sx={{ width: "100%" }}
-                    id="outlined-basic"
-                    placeholder="some"
-                    name={"description"}
-                    value={basicData.description}
-                    onChange={handleBasicDataChange}
-                    variant="outlined"
-                  />
-                </StyledTableCell>
-              </StyledTableRow>
-              <StyledTableRow>
-                <StyledTableCell align="left">transformers</StyledTableCell>
-                <StyledTableCell align="left">
-                  <table id="customers">
-                    <tr>
-                      <th>Name</th>
-                      <th>Priority</th>
-                      <th>stustus</th>
-                    </tr>
-                    {transformers.map((row) => (
-                      <tr>
-                        <td>{row.name}</td>
-                        <td>{row.priority}</td>
-                        <td>{row.status}</td>
-                      </tr>
+        <table id="customers">
+          <tr>
+            <td>Maintenance Personnel</td>
+            <td>
+              {" "}
+              <div className=" flex items-center ">
+                <FormControl sx={{ width: "100%", border: "none" }}>
+                  <Select
+                    sx={{ border: "none" }}
+                    value={nameValue}
+                    onChange={handleNameChange}
+                  >
+                    <MenuItem value="abebe">Abebe</MenuItem>
+                    <MenuItem value="kebede">Kebede</MenuItem>
+                    <MenuItem value="alemu">Alemu</MenuItem>
+                    <MenuItem value="kira">Kira</MenuItem>
+                    <MenuItem value="naol">Naol </MenuItem>
+                    <MenuItem value="massamo">Massamo</MenuItem>
+                    <MenuItem value="mati">MAti</MenuItem>
+                    <MenuItem value="masresha">Masresha</MenuItem>
+                    <MenuItem value="nati">Nati</MenuItem>
+                    <MenuItem value="selam">Selam</MenuItem>
+                  </Select>
+                </FormControl>
+                <IconButton
+                  onClick={() => {
+                    console.log("alkmsckm");
+                    const uniqueName = names.filter(
+                      (name) => name === nameValue
+                    );
+                    if (!nameValue) {
+                      toast.error("Name must be provide name", toastOption);
+                    } else if (uniqueName.length > 0) {
+                      toast.error("Name must be unique", toastOption);
+                    } else {
+                      setNames([nameValue, ...names]);
+                    }
+                  }}
+                >
+                  <AddCircleOutlineIcon />
+                </IconButton>
+              </div>
+              {/* *********************************** show the add user ****************************** */}
+              <div className=" w-[100%]   border-black ">
+                <div className=" flex justify-center flex-wrap w-[100%]   mx-2 ">
+                  {names.length > 0 &&
+                    names.map((n, i) => (
+                      <div key={i}>
+                        <FilterConditions
+                          closFilterCondition={deleteName}
+                          name={n}
+                        />
+                      </div>
                     ))}
-                  </table>
-                </StyledTableCell>
-              </StyledTableRow>
-            </TableBody>
-          </Table>
-        </TableContainer>
+                </div>
+              </div>
+            </td>
+          </tr>
+
+          <tr>
+            <td>
+              <p>Type</p>
+            </td>
+            <td>
+              {" "}
+              <div className="">
+                <TextField
+                  sx={{ width: "100%" }}
+                  id="outlined-basic"
+                  placeholder="type"
+                  name="type"
+                  value={basicData.type}
+                  onChange={handleBasicDataChange}
+                  variant="outlined"
+                />
+              </div>
+            </td>
+          </tr>
+
+          <tr>
+            <td>Date</td>
+            <td>
+              {" "}
+              <div className=" ">
+                <LocalizationProvider dateAdapter={AdapterDayjs}>
+                  <DesktopDatePicker
+                    className="date w-[100%] border-[1px solid red] "
+                    inputFormat="MM/DD/YYYY"
+                    value={dateValue}
+                    onChange={handleDateChange}
+                    renderInput={(params) => <TextField {...params} />}
+                  />
+                </LocalizationProvider>
+              </div>
+            </td>
+          </tr>
+
+          <tr>
+            <td>Description</td>
+            <td>
+              {" "}
+              <TextField
+                sx={{ width: "100%" }}
+                id="outlined-basic"
+                placeholder="some"
+                name={"description"}
+                value={basicData.description}
+                onChange={handleBasicDataChange}
+                variant="outlined"
+              />
+            </td>
+          </tr>
+
+          <tr>
+            <td>transformers</td>
+            <td>akldma</td>
+          </tr>
+
+          <tr>
+            <td>klma</td>
+            <td>
+              {" "}
+              <table id="customers">
+                <tr>
+                  <th>Name</th>
+                  <th>Priority</th>
+                  <th>stustus</th>
+                </tr>
+                {transformers.map((row) => (
+                  <tr>
+                    <td>{row.name}</td>
+                    <td>{row.priority}</td>
+                    <td>{row.status}</td>
+                  </tr>
+                ))}
+              </table>
+            </td>
+          </tr>
+        </table>
       </div>
       <div className="w-[90vw] flex justify-end mx-auto">
         <button
@@ -305,10 +310,6 @@ const ScheduleViewStyle = styled.div`
 
   #customers tr:nth-child(even) {
     background-color: #f2f2f2;
-  }
-
-  #customers tr:hover {
-    background-color: #ddd;
   }
 
   #customers th {

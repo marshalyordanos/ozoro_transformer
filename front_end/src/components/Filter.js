@@ -11,8 +11,8 @@ import styled from "styled-components";
 
 const Filter = ({ addFilterCondition, allCondition }) => {
   const [condition, setCondition] = React.useState("temprature");
-  const [max, setMax] = useState(null);
-  const [min, setMin] = useState(null);
+  const [max, setMax] = useState("");
+  const [min, setMin] = useState("");
   const [operation, setOperation] = React.useState("and");
   console.log("all condition in filter", allCondition);
 
@@ -35,6 +35,8 @@ const Filter = ({ addFilterCondition, allCondition }) => {
         onSubmit={(event) => {
           event.preventDefault();
           addFilterCondition(condition, min, max, operation);
+          setMax("");
+          setMin("");
         }}
         className=" filter_condition mt-3"
       >
@@ -47,7 +49,7 @@ const Filter = ({ addFilterCondition, allCondition }) => {
             }}
             className=" w-[45vw] min-w-[200px]"
           >
-            <InputLabel id="demo-simple-select-standard-label">Age</InputLabel>
+            <InputLabel id="demo-simple-select-standard-label">Type</InputLabel>
             <Select
               labelId="demo-simple-select-standard-label"
               id="demo-simple-select-standard"
@@ -67,6 +69,7 @@ const Filter = ({ addFilterCondition, allCondition }) => {
           <TextField
             type={"number"}
             required
+            value={min}
             onChange={(e) => setMin(e.target.value)}
             color="success"
             size="small"
@@ -79,6 +82,7 @@ const Filter = ({ addFilterCondition, allCondition }) => {
           <TextField
             required
             type={"number"}
+            value={max}
             onChange={(e) => setMax(e.target.value)}
             color="success"
             size="small"

@@ -12,7 +12,7 @@ const style = {
 
   //   border: "2px solid #000",
 
-  p: 4,
+  p: 1,
 };
 const ModalUi = ({ width, bg, children, open, setOpen }) => {
   const handleClose = () => setOpen(false);

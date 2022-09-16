@@ -169,7 +169,7 @@ const StatusPage = ({ handleUserOpen }) => {
       </div>
 
       {/* ******  the body containar ********** */}
-      <div className="mx-[5vw] mt-[13vh]">
+      <div className="mx-[1vw] mt-[13vh]">
         <div className="graph_con flex  m-[10px]   justify-between max-w-[1200px] mx-auto">
           {/* ********************************************** line graph *********************************************** */}
 
@@ -303,7 +303,7 @@ const StatusPage = ({ handleUserOpen }) => {
         <div
           style={{ marginTop: size < 603 ? 240 : size < 902 && 440 }}
           // style={{ marginTop: 200 }}
-          className="bottem_con flex  text-[#D4F7FF] mt-[30px]  justify-between max-w-[1200px] mx-auto"
+          className="bottem_con flex mb-24   text-[#D4F7FF] mt-[30px]  justify-between max-w-[1200px] mx-auto"
         >
           {/* ********************************************** oli level contaner *********************************************** */}
 
@@ -380,7 +380,7 @@ const StatusPage = ({ handleUserOpen }) => {
                         "Humidity chart"
                       )
                     }
-                    className="btn rounded border-[1px] py-2 px-5 "
+                    className="btn rounded border-[1px] py-2 px-5  "
                   >
                     Plot
                   </button>
@@ -581,10 +581,12 @@ const StatusPageStyle = styled.div`
       display: block;
     }
     .line_graph {
-      width: 90vw;
+      border: none;
+      width: 95vw;
       margin-bottom: 20px;
     }
     .bottem_con {
+      width: 90vw;
       display: block;
     }
     .doughnut {
@@ -623,6 +625,7 @@ const StatusPageStyle = styled.div`
         width: 20vw;
         margin-right: 20px;
         font-size: 18px;
+        padding: 8px 0;
       }
     }
     .oil_con {
@@ -662,7 +665,7 @@ const StatusPageStyle = styled.div`
       }
       button {
         width: 20vw;
-
+        padding: 8px 0;
         font-size: 18px;
       }
     }
@@ -696,20 +699,30 @@ const StatusPageStyle = styled.div`
   }
   @media screen and (max-width: 603px) {
     .line_graph {
-      width: 90vw;
-      height: 200px;
+      border: none;
+      width: 98vw;
+      height: 280px;
+      padding-top: 30px;
       margin-bottom: 20px;
+    }
+    .bottem_con {
+      width: 90vw;
+      display: block;
+      position: relative;
+      top: 50px;
     }
     .doughnut_con {
       height: 120px;
     }
     .temprature_con {
+      /* border: 5px solid red; */
       width: 90vw;
       padding: 10px;
       flex-direction: column;
       height: 120px;
       margin-bottom: 15px;
       position: relative;
+      top: 50px;
       .temp_div1 {
         width: 100%;
         flex-grow: 1;
@@ -740,6 +753,8 @@ const StatusPageStyle = styled.div`
         height: 30px;
         margin-right: 10px;
         font-size: 14px;
+
+        padding: 0;
       }
     }
     .oil_con {
@@ -779,6 +794,7 @@ const StatusPageStyle = styled.div`
         right: 0;
         top: 0;
         margin: 8px;
+
         align-self: flex-end;
       }
       button {
@@ -786,6 +802,7 @@ const StatusPageStyle = styled.div`
         height: 30px;
         margin-right: 10px;
         font-size: 14px;
+        padding: 0;
       }
     }
     .con_hvc .hum_con {
@@ -794,12 +811,16 @@ const StatusPageStyle = styled.div`
       margin: 0 auto;
       display: flex;
       flex-direction: column;
+      button {
+        padding: 0;
+      }
     }
     .btn {
       width: 70px;
       height: 30px;
       margin-right: 10px;
       font-size: 14px;
+      padding: 0;
     }
     .sum_con {
       width: 90vw;

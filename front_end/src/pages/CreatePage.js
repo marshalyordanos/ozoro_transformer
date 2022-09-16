@@ -32,7 +32,16 @@ const CreatePage = ({ handleUserOpen }) => {
   const [ratingDatas, setRatingDatas] = useState([]);
   const [editMode, setEditMode] = useState(false);
   const [editData, setEditData] = useState(null);
-
+  const [errors, setErrors] = useState({
+    name: false,
+    location: false,
+    serial: false,
+    type: false,
+    value: false,
+    unit: false,
+    rating: false,
+    atachFiles: false,
+  });
   const [basicValue, setBasicValue] = useState({
     id: uuid(),
     location: "",
@@ -76,12 +85,16 @@ const CreatePage = ({ handleUserOpen }) => {
 
     if (!type) {
       toast.error("Please provide type", toastOption);
+      setErrors({ ...errors, type: true, value: false, unit: false });
     } else if (uniqueRating.length > 0) {
       toast.error("Type must be unique", toastOption);
+      setErrors({ ...errors, type: true, value: false, unit: false });
     } else if (!value || isNaN(parseFloat(value))) {
       toast.error("Please provide valid value", toastOption);
+      setErrors({ ...errors, value: true, type: false, unit: false });
     } else if (!unit) {
-      toast.error("Please provide valid value", toastOption);
+      toast.error("Please provide valid unit", toastOption);
+      setErrors({ ...errors, unit: true, value: false, type: false });
     } else {
       setRatingDatas([
         { type: rating.type, value: rating.value, unit: rating.unit },
@@ -102,13 +115,54 @@ const CreatePage = ({ handleUserOpen }) => {
       atachFiles: files,
       isSubmited: false,
     };
-    setTemoporarySubmit([data, ...temporarySubmit]);
-    setRatingDatas([]);
-    setFiles([]);
-    setBasicValue({ id: uuid(), name: "", location: "", serial: "" });
+
+    if (!data.name) {
+      toast.error("Please provide name", toastOption);
+      setErrors({
+        name: true,
+        location: false,
+        serial: false,
+        type: false,
+        value: false,
+        unit: false,
+      });
+    } else if (!data.location) {
+      toast.error("Please profide Location", toastOption);
+      setErrors({
+        name: false,
+        location: true,
+        serial: false,
+        type: false,
+        value: false,
+        unit: false,
+      });
+    } else if (!data.serial) {
+      toast.error("Please provide valid serial", toastOption);
+      setErrors({
+        name: false,
+        location: false,
+        serial: true,
+        type: false,
+        value: false,
+        unit: false,
+      });
+    } else {
+      setTemoporarySubmit([data, ...temporarySubmit]);
+      setRatingDatas([]);
+      setFiles([]);
+      setBasicValue({ id: uuid(), name: "", location: "", serial: "" });
+      setErrors({
+        name: false,
+        location: false,
+        serial: false,
+        type: false,
+        value: false,
+        unit: false,
+      });
+    }
   };
   const submitHandler = () => {
-    const fd = new FormData();
+    // const fd = new FormData();
     const data = {
       id: basicValue.id,
       name: basicValue.name,
@@ -118,21 +172,61 @@ const CreatePage = ({ handleUserOpen }) => {
       atachFiles: files,
       isSubmited: true,
     };
-    fd.append("id", basicValue.id);
-    fd.append("name", basicValue.name);
-    fd.append("location", basicValue.location);
-    fd.append("serial", basicValue.serial);
-    if (editMode) {
-      const newData = temporarySubmit.filter(
-        (data) => data.id !== basicValue.id
-      );
-      setTemoporarySubmit([data, ...newData]);
+    // fd.append("id", basicValue.id);
+    // fd.append("name", basicValue.name);
+    // fd.append("location", basicValue.location);
+    // fd.append("serial", basicValue.serial);
+    if (!data.name) {
+      toast.error("Please provide name", toastOption);
+      setErrors({
+        name: true,
+        location: false,
+        serial: false,
+        type: false,
+        value: false,
+        unit: false,
+      });
+    } else if (!data.location) {
+      toast.error("Please profide Location", toastOption);
+      setErrors({
+        name: false,
+        location: true,
+        serial: false,
+        type: false,
+        value: false,
+        unit: false,
+      });
+    } else if (!data.serial) {
+      toast.error("Please provide valid serial", toastOption);
+      setErrors({
+        name: false,
+        location: false,
+        serial: true,
+        type: false,
+        value: false,
+        unit: false,
+      });
     } else {
-      setTemoporarySubmit([data, ...temporarySubmit]);
+      if (editMode) {
+        const newData = temporarySubmit.filter(
+          (data) => data.id !== basicValue.id
+        );
+        setTemoporarySubmit([data, ...newData]);
+      } else {
+        setTemoporarySubmit([data, ...temporarySubmit]);
+      }
+      setRatingDatas([]);
+      setFiles([]);
+      setBasicValue({ id: uuid(), name: "", location: "", serial: "" });
+      setErrors({
+        name: false,
+        location: false,
+        serial: false,
+        type: false,
+        value: false,
+        unit: false,
+      });
     }
-    setRatingDatas([]);
-    setFiles([]);
-    setBasicValue({ id: uuid(), name: "", location: "", serial: "" });
   };
 
   const editTransformerHandler = () => {
@@ -146,12 +240,54 @@ const CreatePage = ({ handleUserOpen }) => {
       atachFiles: files,
       isSubmited: false,
     };
-    setTemoporarySubmit([data, ...newData]);
-    setEditMode(false);
-    setRatingDatas([]);
-    setFiles([]);
-    setBasicValue({ id: uuid(), name: "", location: "", serial: "" });
+
+    if (!data.name) {
+      toast.error("Please provide name", toastOption);
+      setErrors({
+        name: true,
+        location: false,
+        serial: false,
+        type: false,
+        value: false,
+        unit: false,
+      });
+    } else if (!data.location) {
+      toast.error("Please profide Location", toastOption);
+      setErrors({
+        name: false,
+        location: true,
+        serial: false,
+        type: false,
+        value: false,
+        unit: false,
+      });
+    } else if (!data.serial) {
+      toast.error("Please provide valid serial", toastOption);
+      setErrors({
+        name: false,
+        location: false,
+        serial: true,
+        type: false,
+        value: false,
+        unit: false,
+      });
+    } else {
+      setTemoporarySubmit([data, ...newData]);
+      setEditMode(false);
+      setRatingDatas([]);
+      setFiles([]);
+      setBasicValue({ id: uuid(), name: "", location: "", serial: "" });
+      setErrors({
+        name: false,
+        location: false,
+        serial: false,
+        type: false,
+        value: false,
+        unit: false,
+      });
+    }
   };
+
   const editTemporaryHandler = (id) => {
     const editableData = temporarySubmit.filter((data) => data.id === id);
     setEditData(editableData[0]);
@@ -187,7 +323,7 @@ const CreatePage = ({ handleUserOpen }) => {
           <div className="">
             <div className="name_id">
               <div className="m-4">
-                <label className="text_icon">
+                <label className={`text_icon border-[1px] border-[#006A66]  `}>
                   <div className="icon flex w-8 h-8 justify-center rounded-full items-center text-white bg-[#006A66]">
                     id
                   </div>
@@ -203,7 +339,11 @@ const CreatePage = ({ handleUserOpen }) => {
                 </label>
               </div>
               <div className="m-4">
-                <label className="text_icon">
+                <label
+                  className={`text_icon border-[1px]  ${
+                    errors.name ? " border-red-700" : " border-[#006A66]"
+                  }`}
+                >
                   <div className="icon flex w-8 h-8 justify-center rounded-full items-center text-white bg-[#006A66]">
                     <SortIcon />
                   </div>
@@ -222,7 +362,11 @@ const CreatePage = ({ handleUserOpen }) => {
             </div>
             <div className="location_serial">
               <div className="m-4">
-                <label className="text_icon">
+                <label
+                  className={`text_icon border-[1px]  ${
+                    errors.location ? " border-red-700" : " border-[#006A66]"
+                  }`}
+                >
                   <div className="icon flex w-8 h-8 justify-center rounded-full items-center text-white bg-[#006A66]">
                     <LocationOnIcon />
                   </div>
@@ -241,7 +385,11 @@ const CreatePage = ({ handleUserOpen }) => {
                 </label>
               </div>{" "}
               <div className="m-4">
-                <label className="text_icon">
+                <label
+                  className={`text_icon border-[1px]  ${
+                    errors.serial ? " border-red-700" : " border-[#006A66]"
+                  }`}
+                >
                   <div className="icon flex w-8 h-8 justify-center rounded-full items-center text-white bg-[#006A66]">
                     <InsertPageBreakIcon />
                   </div>
@@ -265,7 +413,11 @@ const CreatePage = ({ handleUserOpen }) => {
             <div className="rating__body flex justify-between ">
               <div className=" flex flex-col items-center">
                 <div className="m-4">
-                  <label className="rating__input__div  text_icon">
+                  <label
+                    className={`rating__input__div text_icon border-[1px]  ${
+                      errors.type ? " border-red-700" : " border-[#006A66]"
+                    }`}
+                  >
                     <div className="icon flex w-8 h-8 justify-center rounded-full items-center text-white bg-[#006A66]">
                       T
                     </div>
@@ -283,7 +435,11 @@ const CreatePage = ({ handleUserOpen }) => {
                 </div>
                 <div className="flex">
                   <div className="m-4">
-                    <label className="rating__input__div__sm  text_icon2">
+                    <label
+                      className={`rating__input__div__sm text_icon2 border-[1px]  ${
+                        errors.value ? " border-red-700" : " border-[#006A66]"
+                      }`}
+                    >
                       <div className="icon2 flex w-8 h-8 justify-center rounded-full items-center text-white bg-[#006A66]">
                         <HelpOutlinedIcon />
                       </div>
@@ -300,7 +456,11 @@ const CreatePage = ({ handleUserOpen }) => {
                     </label>
                   </div>{" "}
                   <div className="m-4">
-                    <label className="rating__input__div__sm  text_icon2">
+                    <label
+                      className={`rating__input__div__sm text_icon2 border-[1px]  ${
+                        errors.unit ? " border-red-700" : " border-[#006A66]"
+                      }`}
+                    >
                       <div className="icon2 flex w-8 h-8 justify-center rounded-full items-center text-white bg-[#006A66]">
                         <HelpOutlinedIcon />
                       </div>
@@ -362,7 +522,7 @@ const CreatePage = ({ handleUserOpen }) => {
                 onClick={editTransformerHandler}
                 className="bg-[#bcaf00] mx-2 text-white py-2 px-8 rounded "
               >
-                Edit
+                Modify
               </button>
             ) : (
               <button
@@ -443,7 +603,7 @@ const CreatePageStyle = styled.div`
     justify-content: space-between;
   }
   .text_icon2 {
-    border: 1px solid #006a66;
+    /* border: 1px solid #006a66; */
     display: flex;
     align-items: center;
     padding: 0px 10px;
@@ -470,7 +630,6 @@ const CreatePageStyle = styled.div`
     }
   }
   .text_icon {
-    border: 1px solid #006a66;
     display: flex;
     align-items: center;
     padding: 0px 10px;
